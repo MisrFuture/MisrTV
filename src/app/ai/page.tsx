@@ -21,8 +21,8 @@ export default function AiPage() {
       <AiChat />
       <p className="mt-4 text-center text-xs text-cinema-muted">
         {locale === "ar"
-          ? "مدعوم بذكاء مصر تي في — أضف OPENAI_API_KEY لربط GPT"
-          : "Powered by MisrTV AI — add OPENAI_API_KEY to connect GPT"}
+          ? "مدعوم بذكاء مصر تي في — قم بتكوين مفتاح API في الإعدادات"
+          : "Powered by MisrTV AI — configure API key in settings"}
       </p>
     </div>
   );
