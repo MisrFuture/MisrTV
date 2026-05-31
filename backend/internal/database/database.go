@@ -15,12 +15,18 @@ import (
 var DB *gorm.DB
 
 func Connect() error {
+	password := os.Getenv("DB_PASSWORD")
+	if password == "" {
+		slog.Error("DB_PASSWORD environment variable not set")
+		return fmt.Errorf("DB_PASSWORD is required")
+	}
+
 	dsn := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		getEnv("DB_HOST", "localhost"),
 		getEnv("DB_PORT", "5432"),
 		getEnv("DB_USER", "misrtv"),
-		getEnv("DB_PASSWORD", "misrtv"),
+		password,
 		getEnv("DB_NAME", "misrtv"),
 		getEnv("DB_SSLMODE", "disable"),
 	)
