@@ -35,8 +35,8 @@ func main() {
 		api.GET("/movies/upcoming", handlers.GetUpcoming)
 		api.GET("/movies/search", middleware.RateLimit(20, time.Minute), handlers.SearchMovies)
 		api.GET("/movies/:id", handlers.GetMovie)
-	api.GET("/version", handlers.GetVersion)
-	api.GET("/sync/log", handlers.GetSyncLog)
+		api.GET("/version", middleware.RateLimit(10, time.Minute), handlers.GetVersion)
+		api.GET("/sync/log", middleware.RateLimit(5, time.Minute), handlers.GetSyncLog)
 		api.GET("/movies/slug/:slug", handlers.GetMovieBySlug)
 	}
 

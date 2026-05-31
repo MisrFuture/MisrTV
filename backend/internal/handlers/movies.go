@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"math"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -182,10 +183,18 @@ type VersionInfo struct {
 }
 
 func GetVersion(c *gin.Context) {
+	commit := os.Getenv("GIT_COMMIT")
+	if commit == "" {
+		commit = "development"
+	}
+	buildDate := os.Getenv("BUILD_DATE")
+	if buildDate == "" {
+		buildDate = "development"
+	}
 	c.JSON(http.StatusOK, VersionInfo{
 		Version:    "1.0.0",
-		BuildDate:  "2026-05-31",
-		Commit:     "development",
+		BuildDate:  buildDate,
+		Commit:     commit,
 		APIVersion: "v1",
 	})
 }
