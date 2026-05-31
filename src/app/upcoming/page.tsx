@@ -28,8 +28,8 @@ export default function UpcomingPage() {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-        {upcoming.map((m) => (
-          <div key={m.id}>
+        {upcoming.map((m, i) => (
+          <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 80}ms`, animationFillMode: "forwards" }}>
             <MovieCard movie={m} />
             <p className="mt-2 text-center text-xs text-cinema-yellow">
               {new Date(m.releaseDate).toLocaleDateString(

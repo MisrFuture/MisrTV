@@ -80,12 +80,14 @@ export default function ProfilePage() {
         </h2>
         {likedMovies.length > 0 ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-            {likedMovies.map((m) => (
-              <MovieCard key={m.id} movie={m} />
+            {likedMovies.map((m, i) => (
+              <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 60}ms`, animationFillMode: "forwards" }}>
+                <MovieCard movie={m} />
+              </div>
             ))}
           </div>
         ) : (
-          <p className="rounded-xl border border-dashed border-cinema-border py-8 text-center text-cinema-muted">
+          <p className="rounded-xl border border-dashed border-cinema-border py-8 text-center text-cinema-muted animate-fade-in">
             {locale === "ar"
               ? "لم تعجبك أي أفلام بعد — تصفح الأفلام وأضف ❤️"
               : "No liked movies yet — browse and tap ❤️"}

@@ -24,18 +24,19 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-hero-gradient" />
       <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
       <div className="relative mx-auto max-w-3xl text-center">
-        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-cinema-yellow">
+        <p className="mb-3 animate-slide-down text-sm font-medium uppercase tracking-widest text-cinema-yellow">
           {dict.tagline}
         </p>
-        <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl gradient-text">
+        <h1 className="animate-fade-in font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl gradient-text">
           {dict.hero.title}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-cinema-muted">
+        <p className="mx-auto mt-4 max-w-xl animate-slide-up text-lg text-cinema-muted" style={{ animationDelay: "100ms" }}>
           {dict.hero.subtitle}
         </p>
         <form
           onSubmit={handleSearch}
-          className="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row"
+          className="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row animate-slide-up"
+          style={{ animationDelay: "200ms" }}
         >
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-cinema-muted rtl:left-auto rtl:right-4" />
@@ -49,7 +50,7 @@ export function Hero() {
           </div>
           <button
             type="submit"
-            className="btn-primary"
+            className="btn-primary animate-pulse-glow"
           >
             {dict.hero.explore}
           </button>
@@ -57,7 +58,8 @@ export function Hero() {
         <button
           type="button"
           onClick={() => router.push("/ai")}
-          className="mt-4 inline-flex items-center gap-2 text-sm text-cinema-yellow transition-colors hover:text-cinema-red"
+          className="mt-4 inline-flex animate-fade-in items-center gap-2 text-sm text-cinema-yellow transition-colors hover:text-cinema-red"
+          style={{ animationDelay: "350ms" }}
         >
           <Sparkles className="h-4 w-4" />
           {dict.nav.ai}

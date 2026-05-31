@@ -23,24 +23,30 @@ export default function HomePage() {
 
       <Section title={dict.sections.trending} href="/movies">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {trending.map((m) => (
-            <MovieCard key={m.id} movie={m} showFinance />
+          {trending.map((m, i) => (
+            <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 60}ms`, animationFillMode: "forwards" }}>
+              <MovieCard movie={m} showFinance />
+            </div>
           ))}
         </div>
       </Section>
 
       <Section title={dict.sections.arabCinema} href="/movies?filter=arab">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {arab.map((m) => (
-            <MovieCard key={m.id} movie={m} />
+          {arab.map((m, i) => (
+            <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 80}ms`, animationFillMode: "forwards" }}>
+              <MovieCard movie={m} />
+            </div>
           ))}
         </div>
       </Section>
 
       <Section title={dict.sections.upcoming} href="/upcoming">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {upcoming.map((m) => (
-            <MovieCard key={m.id} movie={m} />
+          {upcoming.map((m, i) => (
+            <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 80}ms`, animationFillMode: "forwards" }}>
+              <MovieCard movie={m} />
+            </div>
           ))}
         </div>
       </Section>
@@ -59,11 +65,11 @@ function Section({
 }) {
   return (
     <section>
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between animate-fade-in">
         <h2 className="font-display text-2xl font-bold text-white">{title}</h2>
         <Link
           href={href}
-          className="flex items-center gap-1 text-sm text-cinema-gold hover:underline"
+          className="flex items-center gap-1 text-sm text-cinema-red transition-colors duration-200 hover:text-cinema-yellow"
         >
           <ArrowRight className="h-4 w-4" />
         </Link>

@@ -64,8 +64,10 @@ function MoviesContent() {
         ))}
       </div>
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {filtered.map((m) => (
-          <MovieCard key={m.id} movie={m} showFinance />
+        {filtered.map((m, i) => (
+          <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 50}ms`, animationFillMode: "forwards" }}>
+            <MovieCard movie={m} showFinance />
+          </div>
         ))}
       </div>
       {filtered.length === 0 && (
