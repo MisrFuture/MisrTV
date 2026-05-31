@@ -14,7 +14,11 @@ if command -v docker &> /dev/null; then
     pg_dump -U misrtv misrtv > "$BACKUP_FILE"
 elif command -v pg_dump &> /dev/null; then
   echo "Backing up PostgreSQL directly..."
-  PGPASSWORD="${DB_PASSWORD:-misrtv}" pg_dump -h "${DB_HOST:-localhost}" \
+  if [ -z "${DB_PASSWORD:-}" ]; then
+    echo "ERROR: DB_PASSWORD environment variable not set"
+    exit 1
+  fi
+  PGPASSWORD="$DB_PASSWORD" pg_dump -h "${DB_HOST:-localhost}" \
     -U "${DB_USER:-misrtv}" "${DB_NAME:-misrtv}" > "$BACKUP_FILE"
 else
   echo "ERROR: No PostgreSQL tools or Docker available"

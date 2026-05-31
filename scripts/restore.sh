@@ -33,11 +33,15 @@ if command -v docker &> /dev/null; then
       psql -U misrtv misrtv
   fi
 elif command -v psql &> /dev/null; then
+  if [ -z "${DB_PASSWORD:-}" ]; then
+    echo "ERROR: DB_PASSWORD environment variable not set"
+    exit 1
+  fi
   if [[ "$BACKUP_FILE" == *.gz ]]; then
-    gunzip -c "$BACKUP_FILE" | PGPASSWORD="${DB_PASSWORD:-misrtv}" psql -h "${DB_HOST:-localhost}" \
+    gunzip -c "$BACKUP_FILE" | PGPASSWORD="$DB_PASSWORD" psql -h "${DB_HOST:-localhost}" \
       -U "${DB_USER:-misrtv}" "${DB_NAME:-misrtv}"
   else
-    PGPASSWORD="${DB_PASSWORD:-misrtv}" psql -h "${DB_HOST:-localhost}" \
+    PGPASSWORD="$DB_PASSWORD" psql -h "${DB_HOST:-localhost}" \
       -U "${DB_USER:-misrtv}" "${DB_NAME:-misrtv}" < "$BACKUP_FILE"
   fi
 else
