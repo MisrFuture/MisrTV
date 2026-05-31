@@ -1,0 +1,45 @@
+"use client";
+
+import { MovieCard } from "@/components/movies/movie-card";
+import { getUpcomingMovies } from "@/data/movies";
+import { useLocale } from "@/context/locale-context";
+import { Calendar } from "lucide-react";
+
+export default function UpcomingPage() {
+  const { dict, locale } = useLocale();
+  const upcoming = getUpcomingMovies().sort(
+    (a, b) =>
+      new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime()
+  );
+
+  return (
+    <div>
+      <div className="mb-8 flex items-center gap-3">
+        <Calendar className="h-8 w-8 text-cinema-gold" />
+        <div>
+          <h1 className="font-display text-3xl font-bold">
+            {dict.sections.upcoming}
+          </h1>
+          <p className="text-cinema-muted">
+            {locale === "ar"
+              ? "أفلام قادمة مع توقعات مصر تي في"
+              : "Upcoming releases with MisrTV anticipation scores"}
+          </p>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        {upcoming.map((m) => (
+          <div key={m.id}>
+            <MovieCard movie={m} />
+            <p className="mt-2 text-center text-xs text-cinema-gold">
+              {new Date(m.releaseDate).toLocaleDateString(
+                locale === "ar" ? "ar-EG" : "en-US",
+                { year: "numeric", month: "long", day: "numeric" }
+              )}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
