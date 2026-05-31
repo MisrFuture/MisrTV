@@ -51,7 +51,7 @@ case "${1:-help}" in
     echo -e "${GREEN}Setup complete!${NC}"
     echo "  Frontend: http://localhost:3000"
     echo "  Backend:  http://localhost:8080"
-    echo "  Grafana:  http://localhost:3001 (admin/misrtv)"
+    echo "  Grafana:  http://localhost:3001 (configured credentials)"
     ;;
   dev)
     echo -e "${YELLOW}Starting both frontend and backend...${NC}"

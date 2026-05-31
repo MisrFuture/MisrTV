@@ -15,8 +15,7 @@ case "$ACTION" in
     echo "Services:"
     echo "  Frontend: http://localhost:3000"
     echo "  Backend:  http://localhost:8080"
-    echo "  Grafana:  http://localhost:3001 (admin/misrtv)"
-    echo "  Metrics:  http://localhost:9090"
+    echo "  Grafana:  http://localhost:3001 (configured credentials)"
     ;;
   down)
     echo "Stopping all services..."

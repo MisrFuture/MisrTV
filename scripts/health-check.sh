@@ -20,7 +20,6 @@ echo "==================="
 check_url "Frontend" "http://localhost:3000"
 check_url "Backend" "http://localhost:8080/api/v1/health"
 check_url "Grafana" "http://localhost:3001"
-check_url "Prometheus" "http://localhost:9090"
 
 echo ""
 echo "--- Docker Containers ---"
