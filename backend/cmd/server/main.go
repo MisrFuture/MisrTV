@@ -27,7 +27,7 @@ func main() {
 	slog.Info("Database migrated")
 
 	r := gin.New()
-	r.Use(middleware.Logger(), middleware.CORS(), middleware.Recovery())
+	r.Use(middleware.Logger(), middleware.CORS(), middleware.SecurityHeaders(), middleware.Recovery())
 
 	api := r.Group("/api/v1")
 	{
