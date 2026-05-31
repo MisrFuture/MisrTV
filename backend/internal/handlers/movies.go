@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log/slog"
 	"math"
 	"net/http"
 	"strconv"
@@ -145,7 +146,8 @@ func HealthCheck(c *gin.Context) {
 		return
 	}
 	if err := sqlDB.Ping(); err != nil {
-		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "error", "message": err.Error()})
+		slog.Error("Health check failed", "error", err)
+		c.JSON(http.StatusServiceUnavailable, gin.H{"status": "error", "message": "database health check failed"})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"status": "ok", "service": "MisrTV API"})
