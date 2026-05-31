@@ -151,6 +151,28 @@ func HealthCheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "ok", "service": "MisrTV API"})
 }
 
+type VersionInfo struct {
+	Version   string `json:"version"`
+	BuildDate string `json:"build_date"`
+	Commit    string `json:"commit"`
+	APIVersion string `json:"api_version"`
+}
+
+func GetVersion(c *gin.Context) {
+	c.JSON(http.StatusOK, VersionInfo{
+		Version:    "1.0.0",
+		BuildDate:  "2026-05-31",
+		Commit:     "development",
+		APIVersion: "v1",
+	})
+}
+
+func GetSyncLog(c *gin.Context) {
+	var logs []models.SyncLog
+	database.DB.Order("created_at DESC").Limit(20).Find(&logs)
+	c.JSON(http.StatusOK, logs)
+}
+
 func movieToMap(m models.Movie) gin.H {
 	return gin.H{
 		"id":             m.ID,

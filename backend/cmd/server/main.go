@@ -38,6 +38,8 @@ func main() {
 		api.GET("/movies/upcoming", handlers.GetUpcoming)
 		api.GET("/movies/search", handlers.SearchMovies)
 		api.GET("/movies/:id", handlers.GetMovie)
+	api.GET("/version", handlers.GetVersion)
+	api.GET("/sync/log", handlers.GetSyncLog)
 		api.GET("/movies/slug/:slug", handlers.GetMovieBySlug)
 	}
 
