@@ -26,6 +26,15 @@ func GetMovies(c *gin.Context) {
 	if perPage < 1 || perPage > 100 {
 		perPage = 20
 	}
+	if len(q) > 200 {
+		q = q[:200]
+	}
+	if len(genre) > 100 {
+		genre = genre[:100]
+	}
+	if len(year) > 4 {
+		year = ""
+	}
 
 	query := database.DB.Model(&models.Movie{})
 	if year != "" {
@@ -68,6 +77,10 @@ func GetMovies(c *gin.Context) {
 
 func GetMovie(c *gin.Context) {
 	id := c.Param("id")
+	if _, err := strconv.Atoi(id); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid movie ID"})
+		return
+	}
 	var movie models.Movie
 	if err := database.DB.First(&movie, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Movie not found"})
@@ -78,6 +91,10 @@ func GetMovie(c *gin.Context) {
 
 func GetMovieBySlug(c *gin.Context) {
 	slug := c.Param("slug")
+	if len(slug) > 500 || slug == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid slug"})
+		return
+	}
 	var movie models.Movie
 	// Handle slug lookup by title
 	if err := database.DB.Where("LOWER(title) = ? OR LOWER(title_ar) = ?",
@@ -119,9 +136,13 @@ func GetUpcoming(c *gin.Context) {
 }
 
 func SearchMovies(c *gin.Context) {
-	q := c.Query("q")
+	q := strings.TrimSpace(c.Query("q"))
 	if q == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Query parameter q is required"})
+		return
+	}
+	if len(q) > 200 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Search query too long (max 200 characters)"})
 		return
 	}
 
