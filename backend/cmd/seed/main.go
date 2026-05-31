@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/MisrFuture/MisrTV/backend/internal/database"
@@ -75,9 +76,29 @@ func main() {
 
 	slog.Info("Seeding database...")
 
+	allowedDirs := []string{"src/data", "data", "scripts/output", "."}
+
+	isSafePath := func(p string) bool {
+		abs, err := filepath.Abs(p)
+		if err != nil {
+			return false
+		}
+		for _, d := range allowedDirs {
+			allowedAbs, _ := filepath.Abs(d)
+			if strings.HasPrefix(abs, allowedAbs) {
+				return true
+			}
+		}
+		return false
+	}
+
 	// Try loading from TMDB import first
 	tmdbPath := os.Getenv("TMDB_JSON_PATH")
 	if tmdbPath == "" {
+		tmdbPath = "src/data/tmdb_movies.json"
+	}
+	if !isSafePath(tmdbPath) {
+		slog.Warn("TMDB_JSON_PATH outside allowed directories, using default", "path", tmdbPath)
 		tmdbPath = "src/data/tmdb_movies.json"
 	}
 	if data, err := os.ReadFile(tmdbPath); err == nil {
@@ -89,9 +110,12 @@ func main() {
 		}
 	}
 
-	// Try loading from frontend mock data
 	mockPath := os.Getenv("MOCK_DATA_PATH")
 	if mockPath == "" {
+		mockPath = "src/data/movies.ts"
+	}
+	if !isSafePath(mockPath) {
+		slog.Warn("MOCK_DATA_PATH outside allowed directories, using default", "path", mockPath)
 		mockPath = "src/data/movies.ts"
 	}
 	slog.Info("TMDB data not found. Use seed from frontend mock data or TMDB import", "tmdb_path", tmdbPath)
