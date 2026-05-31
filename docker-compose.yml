@@ -31,6 +31,7 @@ services:
       DB_USER: misrtv
       DB_PASSWORD: ${DB_PASSWORD:-misrtv}
       DB_NAME: misrtv
+      DB_SSLMODE: disable
       PORT: "8080"
       GIN_MODE: release
     depends_on:

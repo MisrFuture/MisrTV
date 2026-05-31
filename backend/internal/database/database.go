@@ -28,7 +28,7 @@ func Connect() error {
 		getEnv("DB_USER", "misrtv"),
 		password,
 		getEnv("DB_NAME", "misrtv"),
-		getEnv("DB_SSLMODE", "disable"),
+		getEnv("DB_SSLMODE", "require"),
 	)
 
 	var err error
