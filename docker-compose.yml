@@ -38,6 +38,24 @@ services:
       postgres:
         condition: service_healthy
 
+  migrate:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: misrtv-migrate
+    restart: "no"
+    entrypoint: ["/migrate"]
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: misrtv
+      DB_PASSWORD: ${DB_PASSWORD:-misrtv}
+      DB_NAME: misrtv
+      DB_SSLMODE: disable
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   frontend:
     build:
       context: .

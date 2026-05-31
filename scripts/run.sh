@@ -22,6 +22,7 @@ help_menu() {
   echo "  ${GREEN}dev${NC}          Start development servers"
   echo "  ${GREEN}prod${NC}         Start production (Docker Compose)"
   echo "  ${GREEN}stop${NC}         Stop all services"
+  echo "  ${GREEN}migrate${NC}      Run database migrations"
   echo "  ${GREEN}seed${NC}         Seed database with movie data"
   echo "  ${GREEN}scrape${NC}       Run TMDB scraper (continuous)"
   echo "  ${GREEN}scrape:once${NC}  Run TMDB scraper once"
@@ -44,6 +45,7 @@ case "${1:-help}" in
     echo -e "${BLUE}[3/5]${NC} Building Go backend..."
     (cd backend && go build -o bin/server ./cmd/server && go build -o bin/seed ./cmd/seed)
     echo -e "${BLUE}[4/5]${NC} Starting Docker services..."
+    docker compose up -d migrate
     docker compose up -d
     echo -e "${BLUE}[5/5]${NC} Seeding database..."
     (cd backend && go run ./cmd/seed)
@@ -73,6 +75,10 @@ case "${1:-help}" in
     docker compose down 2>/dev/null || true
     pkill -f "go run.*cmd/server" 2>/dev/null || true
     echo "All services stopped."
+    ;;
+  migrate)
+    echo "Running database migrations..."
+    docker compose run --rm migrate 2>/dev/null || (cd backend && go run ./cmd/migrate)
     ;;
   seed)
     echo "Seeding database..."

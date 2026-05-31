@@ -21,11 +21,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := database.Migrate(); err != nil {
-		slog.Error("Database migration failed", "error", err)
-		os.Exit(1)
-	}
-	slog.Info("Database migrated")
+	slog.Info("Run 'go run ./cmd/migrate' to apply database migrations")
 
 	r := gin.New()
 	r.Use(middleware.Logger(), middleware.CORS(), middleware.SecurityHeaders(), middleware.RateLimit(100, time.Minute), middleware.Recovery())

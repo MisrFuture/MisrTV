@@ -10,6 +10,7 @@ COMPOSE_FILE="$(dirname "$0")/../docker-compose.yml"
 case "$ACTION" in
   up)
     echo "Starting all services..."
+    docker compose -f "$COMPOSE_FILE" up -d migrate
     docker compose -f "$COMPOSE_FILE" up -d
     echo ""
     echo "Services:"

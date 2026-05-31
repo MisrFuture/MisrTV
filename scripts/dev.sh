@@ -20,6 +20,11 @@ case "$MODE" in
     cd "$(dirname "$0")/../backend"
     go run ./cmd/seed
     ;;
+  migrate)
+    echo "Running migrations..."
+    cd "$(dirname "$0")/../backend"
+    go run ./cmd/migrate
+    ;;
   all)
     echo "Starting frontend + backend (need two terminals)..."
     echo "  Terminal 1: ./scripts/dev.sh backend"
