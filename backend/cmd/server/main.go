@@ -3,6 +3,7 @@ package main
 import (
 	"log/slog"
 	"os"
+	"time"
 
 	"github.com/MisrFuture/MisrTV/backend/internal/database"
 	"github.com/MisrFuture/MisrTV/backend/internal/handlers"
@@ -27,7 +28,7 @@ func main() {
 	slog.Info("Database migrated")
 
 	r := gin.New()
-	r.Use(middleware.Logger(), middleware.CORS(), middleware.SecurityHeaders(), middleware.Recovery())
+	r.Use(middleware.Logger(), middleware.CORS(), middleware.SecurityHeaders(), middleware.RateLimit(100, time.Minute), middleware.Recovery())
 
 	api := r.Group("/api/v1")
 	{
@@ -36,7 +37,7 @@ func main() {
 		api.GET("/movies", handlers.GetMovies)
 		api.GET("/movies/trending", handlers.GetTrending)
 		api.GET("/movies/upcoming", handlers.GetUpcoming)
-		api.GET("/movies/search", handlers.SearchMovies)
+		api.GET("/movies/search", middleware.RateLimit(20, time.Minute), handlers.SearchMovies)
 		api.GET("/movies/:id", handlers.GetMovie)
 	api.GET("/version", handlers.GetVersion)
 	api.GET("/sync/log", handlers.GetSyncLog)
