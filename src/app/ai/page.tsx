@@ -10,7 +10,7 @@ export default function AiPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="mb-8 flex items-center gap-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cinema-gold">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cinema-red to-cinema-yellow shadow-lg shadow-cinema-red/30">
           <Sparkles className="h-6 w-6 text-white" />
         </div>
         <div>

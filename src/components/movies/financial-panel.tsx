@@ -54,9 +54,9 @@ export function FinancialPanel({ movie }: FinancialPanelProps) {
       <div
         className={cn(
           "mb-6 flex items-center gap-3 rounded-xl p-4",
-          fin.status === "profit" && "bg-emerald-500/10 text-emerald-400",
+          fin.status === "profit" && "bg-cinema-red/10 text-cinema-red-light",
           fin.status === "loss" && "bg-red-500/10 text-red-400",
-          fin.status === "breakEven" && "bg-zinc-500/10 text-zinc-400"
+          fin.status === "breakEven" && "bg-cinema-yellow/10 text-cinema-yellow"
         )}
       >
         <Icon className="h-8 w-8" />
@@ -77,7 +77,7 @@ export function FinancialPanel({ movie }: FinancialPanelProps) {
             key={item.label}
             className={cn(
               "rounded-xl border border-cinema-border/80 p-4",
-              item.highlight && "border-cinema-gold/30"
+              item.highlight && "border-cinema-yellow/30"
             )}
           >
             <p className="text-xs text-cinema-muted">{item.label}</p>

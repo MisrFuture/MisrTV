@@ -8,7 +8,7 @@ interface RatingBarsProps {
 }
 
 const sources = [
-  { key: "misrtv" as const, labelEn: "MisrTV", labelAr: "مصر تي في", color: "bg-cinema-gold" },
+  { key: "misrtv" as const, labelEn: "MisrTV", labelAr: "مصر تي في", color: "bg-cinema-red" },
   { key: "imdb" as const, labelEn: "IMDB", labelAr: "آي إم دي بي", color: "bg-amber-500" },
   { key: "rottenTomatoes" as const, labelEn: "Tomatoes", labelAr: "طماطم", color: "bg-red-500" },
   { key: "audience" as const, labelEn: "Audience", labelAr: "الجمهور", color: "bg-blue-500" },

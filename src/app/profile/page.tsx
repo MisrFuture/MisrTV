@@ -34,12 +34,12 @@ export default function ProfilePage() {
   return (
     <div className="space-y-10">
       <div className="flex flex-col items-center gap-6 rounded-2xl border border-cinema-border bg-cinema-card p-8 sm:flex-row sm:items-start">
-        <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-cinema-gold">
+        <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-cinema-red shadow-lg shadow-cinema-red/20">
           <Image src={user.avatar} alt={name} fill className="object-cover" />
         </div>
         <div className="flex-1 text-center sm:text-start">
           <h1 className="flex items-center justify-center gap-2 font-display text-2xl font-bold sm:justify-start">
-            <User className="h-6 w-6 text-cinema-gold" />
+            <User className="h-6 w-6 text-cinema-red" />
             {dict.profile.title}
           </h1>
           <p className="mt-1 text-xl text-white">{name}</p>
@@ -75,7 +75,7 @@ export default function ProfilePage() {
 
       <section>
         <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold">
-          <Heart className="h-5 w-5 text-cinema-gold" />
+          <Heart className="h-5 w-5 text-cinema-red" />
           {dict.profile.liked}
         </h2>
         {likedMovies.length > 0 ? (
@@ -89,7 +89,7 @@ export default function ProfilePage() {
             {locale === "ar"
               ? "لم تعجبك أي أفلام بعد — تصفح الأفلام وأضف ❤️"
               : "No liked movies yet — browse and tap ❤️"}
-            <Link href="/movies" className="mt-2 block text-cinema-gold hover:underline">
+            <Link href="/movies" className="mt-2 block text-cinema-red transition-colors hover:text-cinema-yellow">
               {dict.nav.movies}
             </Link>
           </p>

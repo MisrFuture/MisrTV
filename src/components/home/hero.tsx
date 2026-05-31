@@ -20,16 +20,17 @@ export function Hero() {
   }
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-cinema-border bg-cinema-card px-6 py-16 sm:px-12 sm:py-24">
+    <section className="relative overflow-hidden rounded-3xl border border-cinema-border bg-gradient-to-br from-cinema-card via-cinema-card to-black px-6 py-16 sm:px-12 sm:py-24">
       <div className="pointer-events-none absolute inset-0 bg-hero-gradient" />
+      <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
       <div className="relative mx-auto max-w-3xl text-center">
-        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-cinema-gold">
+        <p className="mb-3 text-sm font-medium uppercase tracking-widest text-cinema-yellow">
           {dict.tagline}
         </p>
-        <h1 className="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+        <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl gradient-text">
           {dict.hero.title}
         </h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-zinc-400">
+        <p className="mx-auto mt-4 max-w-xl text-lg text-cinema-muted">
           {dict.hero.subtitle}
         </p>
         <form
@@ -43,12 +44,12 @@ export function Hero() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={dict.hero.search}
-              className="w-full rounded-xl border border-cinema-border bg-cinema-dark py-3.5 pl-12 pr-4 text-white placeholder:text-cinema-muted focus:border-cinema-gold focus:outline-none focus:ring-1 focus:ring-cinema-gold rtl:pl-4 rtl:pr-12"
+              className="w-full rounded-xl border border-cinema-border bg-black py-3.5 pl-12 pr-4 text-cinema-white placeholder:text-cinema-muted transition-all duration-300 focus:border-cinema-red focus:outline-none focus:ring-1 focus:ring-cinema-red/50 rtl:pl-4 rtl:pr-12"
             />
           </div>
           <button
             type="submit"
-            className="rounded-xl bg-gradient-to-r from-cinema-gold to-amber-500 px-6 py-3.5 font-semibold text-cinema-dark transition hover:opacity-90"
+            className="btn-primary"
           >
             {dict.hero.explore}
           </button>
@@ -56,7 +57,7 @@ export function Hero() {
         <button
           type="button"
           onClick={() => router.push("/ai")}
-          className="mt-4 inline-flex items-center gap-2 text-sm text-cinema-gold hover:underline"
+          className="mt-4 inline-flex items-center gap-2 text-sm text-cinema-yellow transition-colors hover:text-cinema-red"
         >
           <Sparkles className="h-4 w-4" />
           {dict.nav.ai}

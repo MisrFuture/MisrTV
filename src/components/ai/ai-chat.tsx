@@ -36,7 +36,7 @@ export function AiChat() {
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         {messages.length === 0 && (
           <div className="flex h-full flex-col items-center justify-center text-center text-cinema-muted">
-            <Bot className="mb-3 h-12 w-12 text-cinema-gold/50" />
+            <Bot className="mb-3 h-12 w-12 text-cinema-red/50" />
             <p className="text-sm">{dict.ai.subtitle}</p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {dict.ai.suggestions.map((s) => (
@@ -44,7 +44,7 @@ export function AiChat() {
                   key={s}
                   type="button"
                   onClick={() => sendMessage(s)}
-                  className="rounded-lg border border-cinema-border px-3 py-2 text-xs text-zinc-400 transition hover:border-cinema-gold/50 hover:text-cinema-gold"
+                  className="rounded-lg border border-cinema-border px-3 py-2 text-xs text-cinema-muted transition-all duration-200 hover:border-cinema-red/50 hover:text-cinema-red"
                 >
                   {s}
                 </button>
@@ -64,8 +64,8 @@ export function AiChat() {
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
                 msg.role === "user"
-                  ? "bg-cinema-gold/20 text-cinema-gold"
-                  : "bg-violet-500/20 text-violet-400"
+                  ? "bg-cinema-red/20 text-cinema-red"
+                  : "bg-cinema-yellow/20 text-cinema-yellow"
               )}
             >
               {msg.role === "user" ? (
@@ -78,8 +78,8 @@ export function AiChat() {
               className={cn(
                 "max-w-[85%] rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap",
                 msg.role === "user"
-                  ? "bg-cinema-gold/15 text-white"
-                  : "bg-cinema-dark text-zinc-300"
+                  ? "bg-cinema-red/15 text-cinema-white"
+                  : "bg-cinema-card text-cinema-muted"
               )}
             >
               {msg.content}
@@ -103,12 +103,12 @@ export function AiChat() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={dict.ai.placeholder}
-          className="flex-1 rounded-xl border border-cinema-border bg-cinema-dark px-4 py-3 text-white placeholder:text-cinema-muted focus:border-cinema-gold focus:outline-none"
+          className="flex-1 rounded-xl border border-cinema-border bg-black px-4 py-3 text-cinema-white placeholder:text-cinema-muted transition-all duration-300 focus:border-cinema-red focus:outline-none focus:ring-1 focus:ring-cinema-red/50"
         />
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center gap-2 rounded-xl bg-cinema-gold px-4 py-3 font-medium text-cinema-dark disabled:opacity-50"
+          className="btn-primary"
         >
           <Send className="h-4 w-4" />
           {dict.ai.send}

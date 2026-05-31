@@ -57,7 +57,7 @@ function MoviesContent() {
                 ? `/movies?quality=${f.quality}`
                 : "/movies"
             }
-            className="rounded-lg border border-cinema-border px-3 py-1.5 text-sm text-zinc-400 hover:border-cinema-gold hover:text-cinema-gold"
+            className="rounded-lg border border-cinema-border px-3 py-1.5 text-sm text-cinema-muted transition-all duration-200 hover:border-cinema-red hover:text-cinema-red"
           >
             {f.label}
           </a>

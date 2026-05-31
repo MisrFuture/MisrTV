@@ -24,7 +24,7 @@ export function MovieCard({ movie, showFinance = false }: MovieCardProps) {
   return (
     <Link
       href={`/movies/${movie.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-cinema-border bg-cinema-card transition hover:border-cinema-gold/40 hover:shadow-lg hover:shadow-cinema-gold/5"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-cinema-border bg-cinema-card transition-all duration-300 hover:border-cinema-red/40 hover:shadow-xl hover:shadow-cinema-red/5 hover:-translate-y-0.5"
     >
       <div className="relative aspect-[2/3] overflow-hidden">
         <Image
@@ -49,8 +49,8 @@ export function MovieCard({ movie, showFinance = false }: MovieCardProps) {
           )}
         </div>
         <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between">
-          <span className="flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 text-sm font-semibold text-cinema-gold backdrop-blur">
-            <Star className="h-3.5 w-3.5 fill-cinema-gold" />
+          <span className="flex items-center gap-1 rounded-lg bg-black/70 px-2 py-1 text-sm font-semibold text-cinema-yellow backdrop-blur">
+            <Star className="h-3.5 w-3.5 fill-cinema-yellow" />
             {movie.ratings.misrtv || "—"}
           </span>
           <Badge
@@ -67,7 +67,7 @@ export function MovieCard({ movie, showFinance = false }: MovieCardProps) {
         </div>
       </div>
       <div className="flex flex-1 flex-col p-3">
-        <h3 className="line-clamp-1 font-semibold text-white group-hover:text-cinema-gold">
+        <h3 className="line-clamp-1 font-semibold text-cinema-white transition-colors duration-200 group-hover:text-cinema-red">
           {title}
         </h3>
         <p className="mt-0.5 text-xs text-cinema-muted">

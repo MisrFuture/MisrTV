@@ -56,15 +56,15 @@ export default function MovieDetailPage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-cinema-dark via-cinema-dark/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
       </div>
 
       <div className="relative -mt-32 flex flex-col gap-8 md:flex-row">
-        <div className="relative mx-auto h-64 w-44 shrink-0 overflow-hidden rounded-2xl border-2 border-cinema-gold/30 shadow-2xl md:mx-0 md:h-80 md:w-56">
+        <div className="relative mx-auto h-64 w-44 shrink-0 overflow-hidden rounded-2xl border-2 border-cinema-red/30 shadow-2xl shadow-cinema-red/10 md:mx-0 md:h-80 md:w-56">
           <Image src={movie.poster} alt={title} fill className="object-cover" />
         </div>
         <div className="flex-1 pt-4 md:pt-16">
-          <h1 className="font-display text-3xl font-bold text-white md:text-4xl">
+          <h1 className="font-display text-3xl font-bold md:text-4xl gradient-text">
             {title}
           </h1>
           <p className="mt-2 text-cinema-muted">
@@ -81,10 +81,10 @@ export default function MovieDetailPage() {
                 toggleLiked(movie.id);
                 setLiked(isLiked(movie.id));
               }}
-              className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition ${
+              className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition-all duration-200 ${
                 liked
-                  ? "border-cinema-gold bg-cinema-gold/20 text-cinema-gold"
-                  : "border-cinema-border text-zinc-300 hover:border-cinema-gold"
+                  ? "border-cinema-red bg-cinema-red/20 text-cinema-red"
+                  : "border-cinema-border text-cinema-muted hover:border-cinema-red"
               }`}
             >
               <Heart className={`h-4 w-4 ${liked ? "fill-current" : ""}`} />
@@ -96,10 +96,10 @@ export default function MovieDetailPage() {
                 toggleWatchlist(movie.id);
                 setWatchlisted(getWatchlistIds().includes(movie.id));
               }}
-              className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition ${
+              className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition-all duration-200 ${
                 watchlisted
-                  ? "border-violet-500/50 bg-violet-500/20 text-violet-300"
-                  : "border-cinema-border text-zinc-300"
+                  ? "border-cinema-yellow/50 bg-cinema-yellow/20 text-cinema-yellow"
+                  : "border-cinema-border text-cinema-muted hover:border-cinema-yellow"
               }`}
             >
               <Bookmark className="h-4 w-4" />
@@ -124,10 +124,10 @@ export default function MovieDetailPage() {
 
       <div>
         <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
-          <Sparkles className="h-5 w-5 text-violet-400" />
+          <Sparkles className="h-5 w-5 text-cinema-yellow" />
           {dict.movie.aiInsight}
         </h2>
-        <p className="rounded-2xl border border-violet-500/30 bg-violet-500/10 p-4 text-sm text-zinc-300">
+        <p className="rounded-2xl border border-cinema-yellow/30 bg-cinema-yellow/10 p-4 text-sm text-cinema-white">
           {insight}
         </p>
       </div>

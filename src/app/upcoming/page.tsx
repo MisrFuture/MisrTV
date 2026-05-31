@@ -15,7 +15,7 @@ export default function UpcomingPage() {
   return (
     <div>
       <div className="mb-8 flex items-center gap-3">
-        <Calendar className="h-8 w-8 text-cinema-gold" />
+        <Calendar className="h-8 w-8 text-cinema-yellow" />
         <div>
           <h1 className="font-display text-3xl font-bold">
             {dict.sections.upcoming}
@@ -31,7 +31,7 @@ export default function UpcomingPage() {
         {upcoming.map((m) => (
           <div key={m.id}>
             <MovieCard movie={m} />
-            <p className="mt-2 text-center text-xs text-cinema-gold">
+            <p className="mt-2 text-center text-xs text-cinema-yellow">
               {new Date(m.releaseDate).toLocaleDateString(
                 locale === "ar" ? "ar-EG" : "en-US",
                 { year: "numeric", month: "long", day: "numeric" }

@@ -15,11 +15,11 @@ export function Badge({
     <span
       className={cn(
         "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-        variant === "default" && "bg-cinema-border text-zinc-300",
-        variant === "gold" && "bg-cinema-gold/20 text-cinema-gold",
-        variant === "success" && "bg-emerald-500/20 text-emerald-400",
+        variant === "default" && "bg-cinema-border text-cinema-white",
+        variant === "gold" && "bg-cinema-yellow/20 text-cinema-yellow",
+        variant === "success" && "bg-cinema-red/20 text-cinema-red-light",
         variant === "danger" && "bg-red-500/20 text-red-400",
-        variant === "muted" && "bg-zinc-800 text-cinema-muted",
+        variant === "muted" && "bg-cinema-card text-cinema-muted",
         className
       )}
     >

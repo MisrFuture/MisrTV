@@ -5,6 +5,8 @@
 :root {
   --font-display: "Segoe UI", system-ui, sans-serif;
   --font-arabic: "Segoe UI", "Tahoma", "Noto Sans Arabic", sans-serif;
+  --cinema-red: #dc2626;
+  --cinema-yellow: #facc15;
 }
 
 html {
@@ -12,12 +14,10 @@ html {
 }
 
 body {
-  @apply min-h-screen bg-cinema-dark text-zinc-100 antialiased;
-  background-image: radial-gradient(
-    ellipse 100% 80% at 50% 0%,
-    rgba(232, 185, 35, 0.04),
-    transparent 50%
-  );
+  @apply min-h-screen bg-black text-cinema-white antialiased;
+  background-image:
+    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(220, 38, 38, 0.06), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 0%, rgba(250, 204, 21, 0.04), transparent);
 }
 
 [dir="rtl"] body {
@@ -30,7 +30,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-cinema-dark;
+  @apply bg-black;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -39,4 +39,34 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-cinema-muted;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-cinema-white;
+  }
+  a {
+    @apply text-cinema-red transition-colors duration-200 hover:text-cinema-yellow;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-cinema-red px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cinema-red/25 transition-all duration-300 hover:bg-cinema-red-dark hover:shadow-cinema-red/40 active:scale-[0.97];
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-cinema-border bg-cinema-card px-5 py-2.5 text-sm font-semibold text-cinema-white transition-all duration-300 hover:border-cinema-red hover:text-cinema-red active:scale-[0.97];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium text-cinema-muted transition-all duration-200 hover:bg-cinema-card hover:text-cinema-white;
+  }
+  .card {
+    @apply rounded-xl border border-cinema-border bg-cinema-card shadow-lg backdrop-blur-sm transition-all duration-300;
+  }
+  .card-hover {
+    @apply card hover:border-cinema-red/30 hover:shadow-xl hover:shadow-cinema-red/5 hover:-translate-y-0.5;
+  }
+  .gradient-text {
+    @apply bg-gradient-to-r from-cinema-red via-cinema-red-light to-cinema-yellow bg-clip-text text-transparent;
+  }
 }

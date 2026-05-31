@@ -19,16 +19,16 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-cinema-border/80 bg-cinema-dark/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-cinema-border/80 bg-black/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href="/"
           className="flex items-center gap-2 font-display text-xl font-bold tracking-tight"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-cinema-gold to-amber-600 text-cinema-dark">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-cinema-red to-cinema-red-dark text-white shadow-lg shadow-cinema-red/30">
             <Film className="h-5 w-5" />
           </span>
-          <span className="bg-gradient-to-r from-cinema-gold to-amber-200 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-cinema-red via-cinema-red-light to-cinema-yellow bg-clip-text text-transparent">
             {dict.brand}
           </span>
         </Link>
@@ -44,10 +44,10 @@ export function Header() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm transition-colors",
+                "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm transition-all duration-200",
                 pathname === href
-                  ? "bg-cinema-gold/15 text-cinema-gold"
-                  : "text-zinc-400 hover:bg-white/5 hover:text-white"
+                  ? "bg-cinema-red/15 text-cinema-red font-semibold"
+                  : "text-cinema-muted hover:bg-cinema-card hover:text-cinema-white"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -59,7 +59,7 @@ export function Header() {
         <button
           type="button"
           onClick={toggleLocale}
-          className="flex items-center gap-2 rounded-lg border border-cinema-border bg-cinema-card px-3 py-2 text-sm text-zinc-300 transition hover:border-cinema-gold/50 hover:text-cinema-gold"
+          className="flex items-center gap-2 rounded-lg border border-cinema-border bg-cinema-card px-3 py-2 text-sm text-cinema-muted transition-all duration-200 hover:border-cinema-red/50 hover:text-cinema-red"
           aria-label="Toggle language"
         >
           <Languages className="h-4 w-4" />
@@ -73,10 +73,10 @@ export function Header() {
             key={href}
             href={href}
             className={cn(
-              "whitespace-nowrap rounded-lg px-3 py-1.5 text-xs",
+              "whitespace-nowrap rounded-lg px-3 py-1.5 text-xs transition-colors",
               pathname === href
-                ? "bg-cinema-gold/15 text-cinema-gold"
-                : "text-zinc-400"
+                ? "bg-cinema-red/15 text-cinema-red"
+                : "text-cinema-muted"
             )}
           >
             {label}

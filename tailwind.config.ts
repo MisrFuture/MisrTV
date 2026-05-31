@@ -10,12 +10,18 @@ const config: Config = {
     extend: {
       colors: {
         cinema: {
-          gold: "#e8b923",
-          amber: "#f59e0b",
+          red: "#dc2626",
+          "red-dark": "#b91c1c",
+          "red-light": "#ef4444",
+          yellow: "#facc15",
+          "yellow-dark": "#eab308",
+          white: "#ffffff",
+          "white-muted": "#f8fafc",
+          black: "#000000",
           dark: "#0a0a0f",
-          card: "#12121a",
-          border: "#1e1e2e",
-          muted: "#71717a",
+          card: "#1a1a2e",
+          border: "#2a2a3e",
+          muted: "#a1a1aa",
         },
       },
       fontFamily: {
@@ -24,7 +30,9 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-gradient":
-          "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232, 185, 35, 0.15), transparent)",
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(220, 38, 38, 0.25), transparent)",
+        "hero-glow":
+          "radial-gradient(ellipse 60% 40% at 80% 0%, rgba(250, 204, 21, 0.08), transparent)",
       },
     },
   },
