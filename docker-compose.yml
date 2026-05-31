@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: misrtv
-      POSTGRES_PASSWORD: misrtv
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-misrtv}
       POSTGRES_DB: misrtv
     ports:
       - "5432:5432"
@@ -31,7 +31,7 @@ services:
       DB_HOST: postgres
       DB_PORT: "5432"
       DB_USER: misrtv
-      DB_PASSWORD: misrtv
+      DB_PASSWORD: ${DB_PASSWORD:-misrtv}
       DB_NAME: misrtv
       PORT: "8080"
       GIN_MODE: release
@@ -70,8 +70,8 @@ services:
     ports:
       - "3001:3000"
     environment:
-      GF_SECURITY_ADMIN_USER: misrtv
-      GF_SECURITY_ADMIN_PASSWORD: misrtv
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-misrtv}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-misrtv}
       GF_INSTALL_PLUGINS: grafana-piechart-panel
     volumes:
       - grafana_data:/var/lib/grafana
