@@ -58,8 +58,12 @@ services:
     restart: unless-stopped
     expose:
       - "9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.config.file=/etc/prometheus/web.yml'
     volumes:
       - ./infra/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./infra/prometheus-web.yml:/etc/prometheus/web.yml
       - prometheus_data:/prometheus
 
   grafana:
