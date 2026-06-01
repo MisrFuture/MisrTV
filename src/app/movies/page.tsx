@@ -2,13 +2,16 @@
 
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 import { MovieCard } from "@/components/movies/movie-card";
 import { MovieGridSkeleton } from "@/components/movies/movie-card-skeleton";
 import { movies } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { useDebounce } from "@/lib/use-debounce";
 import type { ContentRating } from "@/types/movie";
+
+const INITIAL_COUNT = 12;
+const LOAD_MORE_COUNT = 12;
 
 function MoviesContent() {
   const { dict, locale } = useLocale();
@@ -20,6 +23,7 @@ function MoviesContent() {
   const quality = params.get("quality") as ContentRating | null;
 
   const [searchInput, setSearchInput] = useState(params.get("q") || "");
+  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
   const debouncedSearch = useDebounce(searchInput, 300);
 
   useEffect(() => {
@@ -59,21 +63,22 @@ function MoviesContent() {
     return list.sort((a, b) => b.ratings.misrtv - a.ratings.misrtv);
   }, [q, filter, quality]);
 
+  const visibleMovies = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_COUNT);
+  }, [q, filter, quality]);
+
+  function loadMore() {
+    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, filtered.length));
+  }
+
   const filters = [
     { key: "", label: dict.filters.all },
     { key: "excellent", label: dict.filters.excellent, quality: "excellent" as const },
     { key: "good", label: dict.filters.good, quality: "good" as const },
   ];
-
-  function updateParam(key: string, value: string) {
-    const newParams = new URLSearchParams(params.toString());
-    if (value) {
-      newParams.set(key, value);
-    } else {
-      newParams.delete(key);
-    }
-    router.push(`${pathname}?${newParams.toString()}`);
-  }
 
   return (
     <div>
@@ -111,13 +116,13 @@ function MoviesContent() {
             key={f.key}
             type="button"
             onClick={() => {
+              const newParams = new URLSearchParams(params.toString());
               if (f.quality) {
-                updateParam("quality", f.quality);
+                newParams.set("quality", f.quality);
               } else {
-                const newParams = new URLSearchParams(params.toString());
                 newParams.delete("quality");
-                router.push(`${pathname}?${newParams.toString()}`);
               }
+              router.push(`${pathname}?${newParams.toString()}`);
             }}
             className={`rounded-lg border px-3 py-1.5 text-sm transition-all duration-200 ${
               quality === f.quality || (!quality && !f.quality)
@@ -130,13 +135,36 @@ function MoviesContent() {
         ))}
       </div>
 
-      <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-        {filtered.map((m, i) => (
-          <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 50}ms`, animationFillMode: "forwards" }}>
+      {filtered.length > 0 && (
+        <p className="mt-4 text-xs text-cinema-muted">
+          {locale === "ar"
+            ? `عرض ${visibleMovies.length} من ${filtered.length} فيلماً`
+            : `Showing ${visibleMovies.length} of ${filtered.length} movies`}
+        </p>
+      )}
+
+      <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {visibleMovies.map((m, i) => (
+          <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 30}ms`, animationFillMode: "forwards" }}>
             <MovieCard movie={m} showFinance />
           </div>
         ))}
       </div>
+
+      {hasMore && (
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={loadMore}
+            className="btn-secondary inline-flex items-center gap-2"
+          >
+            <ChevronDown className="h-4 w-4" />
+            {locale === "ar"
+              ? `تحميل المزيد (${filtered.length - visibleCount})`
+              : `Load more (${filtered.length - visibleCount})`}
+          </button>
+        </div>
+      )}
 
       {filtered.length === 0 && (
         <p className="py-12 text-center text-cinema-muted">
