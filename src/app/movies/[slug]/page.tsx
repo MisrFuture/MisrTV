@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Heart, Bookmark, Sparkles } from "lucide-react";
 import { getMovieBySlug } from "@/data/movies";
@@ -10,6 +9,7 @@ import { movieTitle, movieOverview } from "@/lib/i18n";
 import { FinancialPanel } from "@/components/movies/financial-panel";
 import { RatingBars } from "@/components/movies/rating-bars";
 import { AgeRatingBadge } from "@/components/movies/age-rating-badge";
+import { SafeImage } from "@/components/ui/safe-image";
 import { MovieDetailSkeleton } from "@/components/movies/movie-detail-skeleton";
 import { generateMovieInsight } from "@/lib/ai";
 import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds } from "@/lib/storage";
@@ -54,7 +54,7 @@ export default function MovieDetailPage() {
   return (
     <div className="space-y-8">
       <div className="relative -mx-4 h-48 overflow-hidden sm:-mx-6 sm:h-72 md:h-96 animate-scale-in">
-        <Image
+        <SafeImage
           src={movie.backdrop}
           alt=""
           fill
@@ -66,7 +66,7 @@ export default function MovieDetailPage() {
 
       <div className="relative -mt-32 flex flex-col gap-8 md:flex-row">
         <div className="relative mx-auto h-64 w-44 shrink-0 overflow-hidden rounded-2xl border-2 border-cinema-red/30 shadow-2xl shadow-cinema-red/10 animate-scale-in md:mx-0 md:h-80 md:w-56">
-          <Image src={movie.poster} alt={title} fill className="object-cover" />
+          <SafeImage src={movie.poster} alt={title} fill className="object-cover" />
         </div>
         <div className="flex-1 pt-4 md:pt-16 animate-slide-up">
           <h1 className="font-display text-3xl font-bold md:text-4xl gradient-text">

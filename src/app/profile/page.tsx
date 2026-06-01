@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { User, Heart, Bookmark, MapPin, Calendar } from "lucide-react";
 import { defaultUser, movies, getMovieById } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { MovieCard } from "@/components/movies/movie-card";
+import { SafeImage } from "@/components/ui/safe-image";
 import { getLikedIds, getWatchlistIds } from "@/lib/storage";
 
 export default function ProfilePage() {
@@ -35,7 +35,7 @@ export default function ProfilePage() {
     <div className="space-y-10">
       <div className="flex flex-col items-center gap-6 rounded-2xl border border-cinema-border bg-cinema-card p-8 sm:flex-row sm:items-start">
         <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-cinema-red shadow-lg shadow-cinema-red/20">
-          <Image src={user.avatar} alt={name} fill className="object-cover" />
+          <SafeImage src={user.avatar} alt={name} fill className="object-cover" />
         </div>
         <div className="flex-1 text-center sm:text-start">
           <h1 className="flex items-center justify-center gap-2 font-display text-2xl font-bold sm:justify-start">

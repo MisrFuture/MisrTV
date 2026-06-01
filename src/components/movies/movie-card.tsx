@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Star, TrendingUp, TrendingDown } from "lucide-react";
 import type { Movie } from "@/types/movie";
@@ -8,6 +7,7 @@ import { useLocale } from "@/context/locale-context";
 import { movieTitle } from "@/lib/i18n";
 import { getFinancialSummary } from "@/data/movies";
 import { Badge } from "@/components/ui/badge";
+import { SafeImage } from "@/components/ui/safe-image";
 import { cn } from "@/lib/utils";
 
 interface MovieCardProps {
@@ -27,7 +27,7 @@ export function MovieCard({ movie, showFinance = false }: MovieCardProps) {
       className="group relative flex flex-col overflow-hidden rounded-2xl border border-cinema-border bg-cinema-card transition-all duration-300 hover:border-cinema-red/40 hover:shadow-xl hover:shadow-cinema-red/5 hover:-translate-y-0.5"
     >
       <div className="relative aspect-[2/3] overflow-hidden">
-        <Image
+        <SafeImage
           src={movie.poster}
           alt={title}
           fill
