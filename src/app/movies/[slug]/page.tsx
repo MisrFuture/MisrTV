@@ -10,6 +10,7 @@ import { movieTitle, movieOverview } from "@/lib/i18n";
 import { FinancialPanel } from "@/components/movies/financial-panel";
 import { RatingBars } from "@/components/movies/rating-bars";
 import { AgeRatingBadge } from "@/components/movies/age-rating-badge";
+import { MovieDetailSkeleton } from "@/components/movies/movie-detail-skeleton";
 import { generateMovieInsight } from "@/lib/ai";
 import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds } from "@/lib/storage";
 import Link from "next/link";
@@ -17,17 +18,21 @@ import Link from "next/link";
 export default function MovieDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
-  const movie = getMovieBySlug(slug);
   const { locale, dict } = useLocale();
   const [liked, setLiked] = useState(false);
   const [watchlisted, setWatchlisted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (movie) {
-      setLiked(isLiked(movie.id));
-      setWatchlisted(getWatchlistIds().includes(movie.id));
-    }
-  }, [movie]);
+    const timer = setTimeout(() => setLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading || !slug) {
+    return <MovieDetailSkeleton />;
+  }
+
+  const movie = getMovieBySlug(slug);
 
   if (!movie) {
     return (

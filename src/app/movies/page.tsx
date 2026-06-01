@@ -3,6 +3,7 @@
 import { useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { MovieCard } from "@/components/movies/movie-card";
+import { MovieGridSkeleton } from "@/components/movies/movie-card-skeleton";
 import { movies } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import type { ContentRating } from "@/types/movie";
@@ -81,7 +82,7 @@ function MoviesContent() {
 
 export default function MoviesPage() {
   return (
-    <Suspense fallback={<div className="animate-pulse text-cinema-muted">Loading...</div>}>
+    <Suspense fallback={<MovieGridSkeleton count={10} />}>
       <MoviesContent />
     </Suspense>
   );

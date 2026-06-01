@@ -2,6 +2,7 @@
 
 import { Hero } from "@/components/home/hero";
 import { MovieCard } from "@/components/movies/movie-card";
+import { MovieGridSkeleton } from "@/components/movies/movie-card-skeleton";
 import { useLocale } from "@/context/locale-context";
 import {
   getTrendingMovies,
