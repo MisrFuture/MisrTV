@@ -3,6 +3,7 @@ import { LocaleProvider } from "@/context/locale-context";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { PageTransition } from "@/components/ui/page-transition";
+import { BackToTop } from "@/components/ui/back-to-top";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({
             <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
+          <BackToTop />
         </LocaleProvider>
       </body>
     </html>
