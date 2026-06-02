@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Heart, Bookmark, Sparkles, Play } from "lucide-react";
+import { Heart, Bookmark, Sparkles, Play, Share2 } from "lucide-react";
 import { getMovieBySlug } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { movieTitle, movieOverview } from "@/lib/i18n";
@@ -105,6 +105,17 @@ export default function MovieDetailPage() {
                   {dict.movie.watchTrailer}
                 </button>
               )}
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  toast(locale === "ar" ? "تم نسخ الرابط" : "Link copied!", "success");
+                }}
+                className="flex items-center gap-2 rounded-xl border border-cinema-border px-4 py-2 text-sm text-cinema-muted transition-all duration-200 hover:border-cinema-yellow hover:text-cinema-yellow active:scale-95"
+              >
+                <Share2 className="h-4 w-4" />
+                {locale === "ar" ? "مشاركة" : "Share"}
+              </button>
             <button
               type="button"
               onClick={() => {
