@@ -50,3 +50,27 @@ export function toggleWatchlist(movieId: string): string[] {
   localStorage.setItem(WATCHLIST_KEY, JSON.stringify(next));
   return next;
 }
+
+const RECENT_KEY = "misrtv-recent";
+
+export function addRecentMovie(movieId: string) {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    const ids: string[] = raw ? JSON.parse(raw) : [];
+    const next = [movieId, ...ids.filter((id) => id !== movieId)].slice(0, 10);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+  } catch {
+    // ignore
+  }
+}
+
+export function getRecentIds(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(RECENT_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}

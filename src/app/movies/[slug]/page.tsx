@@ -13,7 +13,7 @@ import { SafeImage } from "@/components/ui/safe-image";
 import { Modal } from "@/components/ui/modal";
 import { MovieDetailSkeleton } from "@/components/movies/movie-detail-skeleton";
 import { generateMovieInsight } from "@/lib/ai";
-import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds } from "@/lib/storage";
+import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds, addRecentMovie } from "@/lib/storage";
 import { useToast } from "@/context/toast-context";
 import Link from "next/link";
 
@@ -31,6 +31,11 @@ export default function MovieDetailPage() {
     const timer = setTimeout(() => setLoading(false), 300);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const m = getMovieBySlug(slug);
+    if (m) addRecentMovie(m.id);
+  }, [slug]);
 
   if (loading || !slug) {
     return <MovieDetailSkeleton />;
