@@ -48,6 +48,9 @@ http_request_duration_seconds 0
 		api.GET("/sync/log", middleware.RateLimit(5, time.Minute), handlers.GetSyncLog)
 		api.GET("/movies/slug/:slug", handlers.GetMovieBySlug)
 		api.POST("/login", handlers.Login)
+		api.POST("/favorites", handlers.AddFavorite)
+		api.DELETE("/favorites", handlers.RemoveFavorite)
+		api.GET("/favorites", handlers.GetFavorites)
 	}
 
 	authorized := r.Group("/api/v1/admin")
