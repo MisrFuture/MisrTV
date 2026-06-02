@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"log/slog"
+	"os"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -38,13 +39,21 @@ func Logger() gin.HandlerFunc {
 
 func CORS() gin.HandlerFunc {
 	return cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:5173"},
+		AllowOrigins:     allowedOrigins(),
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	})
+}
+
+func allowedOrigins() []string {
+	origins := []string{"http://localhost:3000", "http://localhost:5173"}
+	if prodOrigin := os.Getenv("FRONTEND_URL"); prodOrigin != "" {
+		origins = append(origins, prodOrigin)
+	}
+	return origins
 }
 
 func SecurityHeaders() gin.HandlerFunc {
