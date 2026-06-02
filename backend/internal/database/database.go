@@ -53,6 +53,7 @@ func Migrate() error {
 	return DB.AutoMigrate(
 		&models.Movie{},
 		&models.SyncLog{},
+		&models.Rating{},
 		&models.Favorite{},
 	)
 }
