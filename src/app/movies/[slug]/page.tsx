@@ -242,6 +242,24 @@ export default function MovieDetailPage() {
         </div>
       </div>
 
+      {movie.gallery && movie.gallery.length > 0 && (
+        <div className="animate-slide-up">
+          <h2 className="mb-4 text-lg font-semibold">{locale === "ar" ? "معرض الصور" : "Gallery"}</h2>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {movie.gallery.map((img, i) => (
+              <Image
+                key={i}
+                src={img}
+                alt={`${title} ${i + 1}`}
+                width={240}
+                height={160}
+                className="h-40 w-60 shrink-0 rounded-xl object-cover"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="animate-slide-up">
         <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
           <Sparkles className="h-5 w-5 text-cinema-yellow animate-float" />

@@ -44,6 +44,7 @@ export interface Movie {
   ratings: MovieRatings;
   tags: string[];
   trailer?: string;
+  gallery?: string[];
 }
 
 export interface UserProfile {
