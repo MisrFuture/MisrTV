@@ -2,16 +2,20 @@
 
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search, X, ChevronDown } from "lucide-react";
+import { Search, X, ChevronDown, ChevronUp } from "lucide-react";
 import { MovieCard } from "@/components/movies/movie-card";
 import { MovieGridSkeleton } from "@/components/movies/movie-card-skeleton";
 import { movies } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { useDebounce } from "@/lib/use-debounce";
+import { cn } from "@/lib/utils";
 import type { ContentRating } from "@/types/movie";
 
 const INITIAL_COUNT = 12;
 const LOAD_MORE_COUNT = 12;
+
+const allGenres = [...new Set(movies.flatMap((m) => m.genres))].sort();
+const allGenresAr = [...new Set(movies.flatMap((m) => m.genresAr))].sort();
 
 function MoviesContent() {
   const { dict, locale } = useLocale();
@@ -21,9 +25,11 @@ function MoviesContent() {
   const q = (params.get("q") || "").toLowerCase();
   const filter = params.get("filter");
   const quality = params.get("quality") as ContentRating | null;
+  const selectedGenre = params.get("genre") || "";
 
   const [searchInput, setSearchInput] = useState(params.get("q") || "");
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+  const [showAllGenres, setShowAllGenres] = useState(false);
   const debouncedSearch = useDebounce(searchInput, 300);
 
   useEffect(() => {
@@ -60,25 +66,41 @@ function MoviesContent() {
     if (quality) {
       list = list.filter((m) => m.contentRating === quality);
     }
+    if (selectedGenre) {
+      list = list.filter((m) => m.genres.includes(selectedGenre));
+    }
     return list.sort((a, b) => b.ratings.misrtv - a.ratings.misrtv);
-  }, [q, filter, quality]);
+  }, [q, filter, quality, selectedGenre]);
 
   const visibleMovies = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
 
   useEffect(() => {
     setVisibleCount(INITIAL_COUNT);
-  }, [q, filter, quality]);
+  }, [q, filter, quality, selectedGenre]);
 
   function loadMore() {
     setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, filtered.length));
   }
 
-  const filters = [
+  function setParam(key: string, value: string) {
+    const newParams = new URLSearchParams(params.toString());
+    if (value) {
+      newParams.set(key, value);
+    } else {
+      newParams.delete(key);
+    }
+    router.push(`${pathname}?${newParams.toString()}`);
+  }
+
+  const qualityFilters = [
     { key: "", label: dict.filters.all },
     { key: "excellent", label: dict.filters.excellent, quality: "excellent" as const },
     { key: "good", label: dict.filters.good, quality: "good" as const },
   ];
+
+  const genres = locale === "ar" ? allGenresAr : allGenres;
+  const displayGenres = showAllGenres ? genres : genres.slice(0, 8);
 
   return (
     <div>
@@ -111,19 +133,11 @@ function MoviesContent() {
       )}
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {filters.map((f) => (
+        {qualityFilters.map((f) => (
           <button
             key={f.key}
             type="button"
-            onClick={() => {
-              const newParams = new URLSearchParams(params.toString());
-              if (f.quality) {
-                newParams.set("quality", f.quality);
-              } else {
-                newParams.delete("quality");
-              }
-              router.push(`${pathname}?${newParams.toString()}`);
-            }}
+            onClick={() => setParam("quality", f.quality || "")}
             className={`rounded-lg border px-3 py-1.5 text-sm transition-all duration-200 ${
               quality === f.quality || (!quality && !f.quality)
                 ? "border-cinema-red bg-cinema-red/20 text-cinema-red"
@@ -133,6 +147,39 @@ function MoviesContent() {
             {f.label}
           </button>
         ))}
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {displayGenres.map((genre) => {
+          const isActive = selectedGenre === genre;
+          return (
+            <button
+              key={genre}
+              type="button"
+              onClick={() => setParam("genre", isActive ? "" : genre)}
+              className={cn(
+                "rounded-lg border px-2.5 py-1 text-xs transition-all duration-200",
+                isActive
+                  ? "border-cinema-yellow/50 bg-cinema-yellow/15 text-cinema-yellow"
+                  : "border-cinema-border/50 text-cinema-muted hover:border-cinema-yellow/30 hover:text-cinema-white"
+              )}
+            >
+              {genre}
+            </button>
+          );
+        })}
+        {genres.length > 8 && (
+          <button
+            type="button"
+            onClick={() => setShowAllGenres(!showAllGenres)}
+            className="flex items-center gap-1 rounded-lg border border-cinema-border/30 px-2.5 py-1 text-xs text-cinema-muted transition-colors hover:text-cinema-white"
+          >
+            {showAllGenres ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            {showAllGenres
+              ? (locale === "ar" ? "أقل" : "Less")
+              : (locale === "ar" ? `${genres.length - 8} أكثر` : `${genres.length - 8} more`)}
+          </button>
+        )}
       </div>
 
       {filtered.length > 0 && (
