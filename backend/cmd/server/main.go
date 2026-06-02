@@ -69,6 +69,7 @@ http_request_duration_seconds 0
 		authorized.POST("/movies", handlers.CreateMovie)
 		authorized.PUT("/movies/:id", handlers.UpdateMovie)
 		authorized.DELETE("/movies/:id", handlers.DeleteMovie)
+		authorized.POST("/sync", middleware.RateLimit(2, time.Minute), handlers.TriggerSync)
 	}
 
 	port := os.Getenv("PORT")
