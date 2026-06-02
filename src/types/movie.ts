@@ -47,6 +47,23 @@ export interface Movie {
   gallery?: string[];
 }
 
+export interface TVSeries {
+  id: string;
+  titleEn: string;
+  titleAr: string;
+  overviewEn: string;
+  overviewAr: string;
+  poster: string;
+  year: number;
+  seasons: number;
+  episodes: number;
+  genres: string[];
+  genresAr: string[];
+  status: "ongoing" | "ended" | "upcoming";
+  rating: number;
+  tags: string[];
+}
+
 export interface UserProfile {
   id: string;
   name: string;
