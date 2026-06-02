@@ -19,6 +19,7 @@ export const translations = {
       ai: "AI Assistant",
       profile: "Profile",
       compare: "Compare",
+      playlists: "Playlists",
     },
     hero: {
       title: "Discover films that matter",
@@ -132,6 +133,7 @@ export const translations = {
       ai: "المساعد الذكي",
       profile: "الملف الشخصي",
       compare: "مقارنة",
+      playlists: "القوائم",
     },
     hero: {
       title: "اكتشف أفلاماً تستحق وقتك",
