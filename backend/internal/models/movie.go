@@ -74,6 +74,14 @@ type PaginatedResponse struct {
 	TotalPages int    `json:"total_pages"`
 }
 
+type Comment struct {
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	UserID    string    `gorm:"index;not null" json:"user_id"`
+	MovieID   string    `gorm:"index;not null" json:"movie_id"`
+	Content   string    `gorm:"type:text;not null" json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 type Rating struct {
 	ID        uint      `gorm:"primaryKey" json:"id"`
 	UserID    string    `gorm:"index;not null" json:"user_id"`
