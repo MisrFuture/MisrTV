@@ -28,6 +28,7 @@ function MoviesContent() {
   const selectedGenre = params.get("genre") || "";
   const yearFrom = parseInt(params.get("yearFrom") || "", 10) || 0;
   const yearTo = parseInt(params.get("yearTo") || "", 10) || 0;
+  const sortBy = params.get("sort") || "misrtv";
 
   const [searchInput, setSearchInput] = useState(params.get("q") || "");
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -77,15 +78,25 @@ function MoviesContent() {
     if (yearTo) {
       list = list.filter((m) => m.year <= yearTo);
     }
-    return list.sort((a, b) => b.ratings.misrtv - a.ratings.misrtv);
-  }, [q, filter, quality, selectedGenre, yearFrom, yearTo]);
+    if (sortBy === "year") list.sort((a, b) => b.year - a.year);
+    else if (sortBy === "title") list.sort((a, b) => a.titleEn.localeCompare(b.titleEn));
+    else if (sortBy === "boxOffice") list.sort((a, b) => b.financials.boxOffice - a.financials.boxOffice);
+    else if (sortBy === "roi") {
+      const roi = (m: typeof movies[0]) => {
+        const tc = m.financials.budget + (m.financials.marketing || 0);
+        return tc > 0 ? (m.financials.boxOffice - tc) / tc : 0;
+      };
+      list.sort((a, b) => roi(b) - roi(a));
+    } else list.sort((a, b) => b.ratings.misrtv - a.ratings.misrtv);
+    return list;
+  }, [q, filter, quality, selectedGenre, yearFrom, yearTo, sortBy]);
 
   const visibleMovies = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
 
   useEffect(() => {
     setVisibleCount(INITIAL_COUNT);
-  }, [q, filter, quality, selectedGenre, yearFrom, yearTo]);
+  }, [q, filter, quality, selectedGenre, yearFrom, yearTo, sortBy]);
 
   function loadMore() {
     setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, filtered.length));
@@ -155,6 +166,20 @@ function MoviesContent() {
             {f.label}
           </button>
         ))}
+      </div>
+
+      <div className="mt-3">
+        <select
+          value={sortBy}
+          onChange={(e) => setParam("sort", e.target.value)}
+          className="rounded-lg border border-cinema-border bg-cinema-card px-3 py-1.5 text-sm text-cinema-white transition-all focus:border-cinema-red focus:outline-none"
+        >
+          <option value="misrtv">{dict.filters.all}</option>
+          <option value="year">{locale === "ar" ? "السنة" : "Year"}</option>
+          <option value="title">{locale === "ar" ? "الاسم" : "Title"}</option>
+          <option value="boxOffice">{locale === "ar" ? "الإيرادات" : "Box Office"}</option>
+          <option value="roi">ROI</option>
+        </select>
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
