@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { PageTransition } from "@/components/ui/page-transition";
 import { BackToTop } from "@/components/ui/back-to-top";
+import { ToastProvider } from "@/context/toast-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,12 +22,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <LocaleProvider>
-          <Header />
-          <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-          <BackToTop />
+          <ToastProvider>
+            <Header />
+            <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+            <BackToTop />
+          </ToastProvider>
         </LocaleProvider>
       </body>
     </html>

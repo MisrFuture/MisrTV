@@ -14,6 +14,7 @@ import { Modal } from "@/components/ui/modal";
 import { MovieDetailSkeleton } from "@/components/movies/movie-detail-skeleton";
 import { generateMovieInsight } from "@/lib/ai";
 import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds } from "@/lib/storage";
+import { useToast } from "@/context/toast-context";
 import Link from "next/link";
 
 export default function MovieDetailPage() {
@@ -24,6 +25,7 @@ export default function MovieDetailPage() {
   const [watchlisted, setWatchlisted] = useState(false);
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 300);
@@ -82,21 +84,34 @@ export default function MovieDetailPage() {
             contentRating={movie.contentRating}
           />
           <div className="mt-4 flex flex-wrap gap-2">
-            {movie.trailer && (
-              <button
-                type="button"
-                onClick={() => setTrailerOpen(true)}
-                className="flex items-center gap-2 rounded-xl border border-cinema-red/40 bg-cinema-red/10 px-4 py-2 text-sm text-cinema-red transition-all duration-200 hover:bg-cinema-red/20 active:scale-95"
-              >
-                <Play className="h-4 w-4" />
-                {dict.movie.watchTrailer}
-              </button>
-            )}
+              {movie.trailer && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTrailerOpen(true);
+                    toast(
+                      locale === "ar" ? "جاري تشغيل الإعلان..." : "Loading trailer...",
+                      "info"
+                    );
+                  }}
+                  className="flex items-center gap-2 rounded-xl border border-cinema-red/40 bg-cinema-red/10 px-4 py-2 text-sm text-cinema-red transition-all duration-200 hover:bg-cinema-red/20 active:scale-95"
+                >
+                  <Play className="h-4 w-4" />
+                  {dict.movie.watchTrailer}
+                </button>
+              )}
             <button
               type="button"
               onClick={() => {
+                const nowLiked = !isLiked(movie.id);
                 toggleLiked(movie.id);
-                setLiked(isLiked(movie.id));
+                setLiked(nowLiked);
+                toast(
+                  nowLiked
+                    ? (locale === "ar" ? "تمت الإضافة إلى المفضلة" : "Added to liked")
+                    : (locale === "ar" ? "تمت الإزالة من المفضلة" : "Removed from liked"),
+                  nowLiked ? "success" : "info"
+                );
               }}
               className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition-all duration-200 active:scale-95 ${
                 liked
@@ -110,8 +125,15 @@ export default function MovieDetailPage() {
             <button
               type="button"
               onClick={() => {
+                const nowWatchlisted = !getWatchlistIds().includes(movie.id);
                 toggleWatchlist(movie.id);
-                setWatchlisted(getWatchlistIds().includes(movie.id));
+                setWatchlisted(nowWatchlisted);
+                toast(
+                  nowWatchlisted
+                    ? (locale === "ar" ? "تمت الإضافة إلى قائمة المشاهدة" : "Added to watchlist")
+                    : (locale === "ar" ? "تمت الإزالة من قائمة المشاهدة" : "Removed from watchlist"),
+                  nowWatchlisted ? "success" : "info"
+                );
               }}
               className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition-all duration-200 active:scale-95 ${
                 watchlisted
