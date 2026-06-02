@@ -35,6 +35,11 @@ http_request_duration_seconds 0
 `)
 	})
 
+	r.StaticFile("/api/v1/docs", "./docs/swagger.json")
+	r.GET("/api/v1/docs/openapi.json", func(c *gin.Context) {
+		c.File("./docs/swagger.json")
+	})
+
 	api := r.Group("/api/v1")
 	{
 		api.GET("/health", handlers.HealthCheck)

@@ -1,0 +1,27 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MisrTV API",
+    "version": "1.0.0",
+    "description": "MisrTV backend API for Egyptian movies and TV"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": { "summary": "Health check", "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/v1/movies": {
+      "get": { "summary": "List movies", "parameters": [
+        { "name": "page", "in": "query", "schema": { "type": "integer" } },
+        { "name": "per_page", "in": "query", "schema": { "type": "integer" } },
+        { "name": "year", "in": "query", "schema": { "type": "integer" } },
+        { "name": "genre", "in": "query", "schema": { "type": "string" } },
+        { "name": "q", "in": "query", "schema": { "type": "string" } }
+      ], "responses": { "200": { "description": "Paginated movie list" } } }
+    },
+    "/api/v1/login": {
+      "post": { "summary": "User login", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": {
+        "username": { "type": "string" }, "password": { "type": "string" }
+      } } } } }, "responses": { "200": { "description": "JWT token" } } }
+    }
+  }
+}
