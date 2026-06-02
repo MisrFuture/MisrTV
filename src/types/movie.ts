@@ -10,6 +10,13 @@ export interface Financials {
   marketing?: number;
 }
 
+export interface Award {
+  name: string;
+  year: number;
+  category: string;
+  result: "won" | "nominated";
+}
+
 export interface MovieRatings {
   imdb: number;
   rottenTomatoes: number;
@@ -46,6 +53,7 @@ export interface Movie {
   trailer?: string;
   gallery?: string[];
   trivia?: string[];
+  awards?: Award[];
 }
 
 export interface TVSeries {

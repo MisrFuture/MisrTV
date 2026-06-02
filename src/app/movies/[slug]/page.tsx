@@ -292,6 +292,25 @@ export default function MovieDetailPage() {
         <FinancialPanel movie={movie} />
       </div>
 
+      {movie.awards && movie.awards.length > 0 && (
+        <div className="animate-slide-up">
+          <h2 className="mb-4 text-lg font-semibold">{locale === "ar" ? "الجوائز" : "Awards"}</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {movie.awards.map((a, i) => (
+              <div key={i} className="rounded-xl border border-cinema-border/50 bg-cinema-card/50 p-4">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-cinema-white">{a.name}</p>
+                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${a.result === "won" ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400"}`}>
+                    {a.result === "won" ? (locale === "ar" ? "فائز" : "Won") : (locale === "ar" ? "ترشيح" : "Nominated")}
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-cinema-muted">{a.category} · {a.year}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <Modal open={trailerOpen} onClose={() => setTrailerOpen(false)}>
         <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
           <iframe
