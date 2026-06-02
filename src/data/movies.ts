@@ -30,7 +30,8 @@ function m(
   rt: number,
   misrtv: number,
   audience: number,
-  tags: string[]
+  tags: string[],
+  trailer?: string
 ): Movie {
   return {
     id, slug, titleEn, titleAr, overviewEn, overviewAr,
@@ -41,6 +42,7 @@ function m(
     ageRating, contentRating, status, releaseDate,
     financials: { budget, boxOffice, marketing },
     ratings: { imdb, rottenTomatoes: rt, misrtv, audience }, tags,
+    trailer,
   };
 }
 
@@ -53,8 +55,8 @@ export const movies: Movie[] = [
     2025,142,["Drama","Arab Cinema"],["دراما","سينما عربية"],
     "Egypt","مصر","Mariam Abou Ouf","مريم أبو عوف",
     ["Ahmed Helmy","Karim Abdel Aziz","Yousra"],["أحمد حلمي","كريم عبد العزيز","يسرا"],
-    "PG-13","excellent","released","2025-01-15",12e6,48.5e6,3.2e6,8.4,92,9.1,88,["cairo","drama","arab","egypt"]),
-
+    "PG-13","excellent","released","2025-01-15",12e6,48.5e6,3.2e6,8.4,92,9.1,88,["cairo","drama","arab","egypt"],"dQw4w9WgXcQ"),
+ 
   m("2","desert-horizon","Desert Horizon","أفق الصحراء",
     "Epic sci-fi adventure set in a near-future UAE where solar cities rise from the dunes. Blockbuster visuals meet Arab futurism.",
     "مغامرة خيال علمي ملحمية في إمارات المستقبل القريب حيث تنهض مدن شمسية من الرمال.",
@@ -223,8 +225,8 @@ export const movies: Movie[] = [
     2023,135,["Drama","Mystery"],["دراما","غموض"],
     "Egypt","مصر","Marwan Hamed","مروان حامد",
     ["Yehia El-Fakharany","Nabila Ebeid"],["يحيى الفخراني","نبيلة عبيد"],
-    "PG-13","excellent","released","2023-04-12",8e6,25e6,2.5e6,8.2,88,8.8,84,["egypt","drama","classic"]),
-
+    "PG-13","excellent","released","2023-04-12",8e6,25e6,2.5e6,8.2,88,8.8,84,["egypt","drama","classic"],"L_8IPP8g1rc"),
+ 
   m("21","al-risala","Al-Risala (The Message)","الرسالة",
     "Epic historical drama about the birth of Islam directed by the legendary Moustapha Akkad.",
     "دراما تاريخية ملحمية عن نشأة الإسلام من إخراج الأسطوري مصطفى العقاد.",
@@ -325,8 +327,8 @@ export const movies: Movie[] = [
     2014,160,["Thriller","Drama","Horror"],["إثارة","دراما","رعب"],
     "Egypt","مصر","Marwan Hamed","مروان حامد",
     ["Karim Abdel Aziz","Nelly Karim","Sherif Mounir"],["كريم عبد العزيز","نيللي كريم","شريف منير"],
-    "PG-13","excellent","released","2014-06-15",5e6,22e6,2e6,8.1,85,8.6,82,["egypt","thriller","bestseller"]),
-
+    "PG-13","excellent","released","2014-06-15",5e6,22e6,2e6,8.1,85,8.6,82,["egypt","thriller","bestseller"],"jfKfPfyJRdk"),
+ 
   m("32","blue-elephant-2","The Blue Elephant 2","الفيل الأزرق 2",
     "Dr. Yehia returns to face new terrors inside the Abbasiya mental hospital.",
     "الدكتور يحيى يعود لمواجهة أهوال جديدة داخل مستشفى العباسية للأمراض العقلية.",
@@ -334,8 +336,8 @@ export const movies: Movie[] = [
     2019,165,["Thriller","Drama","Horror"],["إثارة","دراما","رعب"],
     "Egypt","مصر","Marwan Hamed","مروان حامد",
     ["Karim Abdel Aziz","Nelly Karim","Hend Sabry"],["كريم عبد العزيز","نيللي كريم","هند صبري"],
-    "PG-13","good","released","2019-08-15",8e6,30e6,3e6,7.6,75,8.1,79,["egypt","thriller","sequel"]),
-
+    "PG-13","good","released","2019-08-15",8e6,30e6,3e6,7.6,75,8.1,79,["egypt","thriller","sequel"],"J3APG6dCb3o"),
+ 
   m("33","asphalt-flowers","Asphalt Flowers","زهور الأسفلت",
     "A heart-wrenching drama about street children in Cairo. Won multiple awards at Carthage Film Festival.",
     "دراما مفجعة عن أطفال الشوارع في القاهرة. فاز بعدة جوائز في مهرجان قرطاج.",
@@ -471,8 +473,8 @@ export const movies: Movie[] = [
     2025,110,["Romance","Comedy"],["رومانسية","كوميديا"],
     "Egypt","مصر","Tamer Mohsen","تامر محسن",
     ["Mohamed Henedi","Menna Shalabi"],["محمد هنيدي","منى شلبي"],
-    "PG","good","upcoming","2025-03-20",3e6,0,1e6,0,0,7.5,0,["egypt","comedy","upcoming","arab"]),
-
+    "PG","good","upcoming","2025-03-20",3e6,0,1e6,0,0,7.5,0,["egypt","comedy","upcoming","arab"],"x1ZJ0j7fX1c"),
+ 
   m("48","the-cairo-job","The Cairo Job","مهمة القاهرة",
     "An international heist thriller set across the rooftops and tunnels of Cairo.",
     "إثارة سرقة دولية على أسطح وأنفاق القاهرة.",
@@ -480,7 +482,7 @@ export const movies: Movie[] = [
     2025,138,["Action","Thriller"],["أكشن","إثارة"],
     "Egypt / France","مصر / فرنسا","Sandra Nashaat","ساندرا نشأت",
     ["Amr Waked","Yousra","Asser Yassin"],["عمرو واكد","يسرا","آسر ياسين"],
-    "PG-13","good","upcoming","2025-06-05",15e6,0,5e6,0,0,8.0,0,["egypt","action","upcoming","arab"]),
+    "PG-13","good","upcoming","2025-06-05",15e6,0,5e6,0,0,8.0,0,["egypt","action","upcoming","arab"],"3JZ_D3ELwOQ"),
 ];
 
 export const defaultUser: UserProfile = {

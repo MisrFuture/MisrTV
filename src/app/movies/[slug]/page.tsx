@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Heart, Bookmark, Sparkles } from "lucide-react";
+import { Heart, Bookmark, Sparkles, Play } from "lucide-react";
 import { getMovieBySlug } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { movieTitle, movieOverview } from "@/lib/i18n";
@@ -10,6 +10,7 @@ import { FinancialPanel } from "@/components/movies/financial-panel";
 import { RatingBars } from "@/components/movies/rating-bars";
 import { AgeRatingBadge } from "@/components/movies/age-rating-badge";
 import { SafeImage } from "@/components/ui/safe-image";
+import { Modal } from "@/components/ui/modal";
 import { MovieDetailSkeleton } from "@/components/movies/movie-detail-skeleton";
 import { generateMovieInsight } from "@/lib/ai";
 import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds } from "@/lib/storage";
@@ -21,6 +22,7 @@ export default function MovieDetailPage() {
   const { locale, dict } = useLocale();
   const [liked, setLiked] = useState(false);
   const [watchlisted, setWatchlisted] = useState(false);
+  const [trailerOpen, setTrailerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -80,6 +82,16 @@ export default function MovieDetailPage() {
             contentRating={movie.contentRating}
           />
           <div className="mt-4 flex flex-wrap gap-2">
+            {movie.trailer && (
+              <button
+                type="button"
+                onClick={() => setTrailerOpen(true)}
+                className="flex items-center gap-2 rounded-xl border border-cinema-red/40 bg-cinema-red/10 px-4 py-2 text-sm text-cinema-red transition-all duration-200 hover:bg-cinema-red/20 active:scale-95"
+              >
+                <Play className="h-4 w-4" />
+                {dict.movie.watchTrailer}
+              </button>
+            )}
             <button
               type="button"
               onClick={() => {
@@ -141,6 +153,18 @@ export default function MovieDetailPage() {
         <h2 className="mb-4 text-lg font-semibold">{dict.movie.analysis}</h2>
         <FinancialPanel movie={movie} />
       </div>
+
+      <Modal open={trailerOpen} onClose={() => setTrailerOpen(false)}>
+        <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
+          <iframe
+            src={`https://www.youtube.com/embed/${movie.trailer}?autoplay=1`}
+            title={title}
+            className="absolute inset-0 h-full w-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </Modal>
     </div>
   );
 }
