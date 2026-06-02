@@ -102,12 +102,12 @@ func GetMovies(c *gin.Context) {
 	offset := (page - 1) * perPage
 	query.Order("year DESC, misrtv_rating DESC").Offset(offset).Limit(perPage).Find(&movies)
 
-	result := make([]gin.H, len(movies))
+	result := make([]models.MovieResponse, len(movies))
 	for i, m := range movies {
-		result[i] = movieToMap(m)
+		result[i] = movieToResponse(m)
 	}
 
-	c.JSON(http.StatusOK, models.PaginatedResponse{
+	c.JSON(http.StatusOK, models.PaginatedMovieResponse{
 		Data:       result,
 		Page:       page,
 		PerPage:    perPage,
@@ -257,6 +257,36 @@ func GetSyncLog(c *gin.Context) {
 	var logs []models.SyncLog
 	database.DB.Order("created_at DESC").Limit(20).Find(&logs)
 	c.JSON(http.StatusOK, logs)
+}
+
+func movieToResponse(m models.Movie) models.MovieResponse {
+	return models.MovieResponse{
+		ID:            m.ID,
+		TMDBID:        m.TMDBID,
+		Title:         m.Title,
+		TitleAr:       m.TitleAr,
+		Overview:      m.Overview,
+		OverviewAr:    m.OverviewAr,
+		Year:          m.Year,
+		Runtime:       m.Runtime,
+		Poster:        m.Poster,
+		Backdrop:      m.Backdrop,
+		Genres:        splitComma(m.Genres),
+		GenresAr:      splitComma(m.GenresAr),
+		Country:       m.Country,
+		CountryAr:     m.CountryAr,
+		Director:      m.Director,
+		DirectorAr:    m.DirectorAr,
+		Cast:          splitComma(m.Cast),
+		CastAr:        splitComma(m.CastAr),
+		AgeRating:     m.AgeRating,
+		ContentRating: m.ContentRating,
+		Status:        m.Status,
+		ReleaseDate:   m.ReleaseDate,
+		IMDBRating:    m.IMDBRating,
+		MisrTVRating:  m.MisrTVRating,
+		VoteCount:     m.VoteCount,
+	}
 }
 
 func movieToMap(m models.Movie) gin.H {
