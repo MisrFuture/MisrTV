@@ -46,6 +46,7 @@ http_request_duration_seconds 0
 		api.GET("/version", middleware.RateLimit(10, time.Minute), handlers.GetVersion)
 		api.GET("/sync/log", middleware.RateLimit(5, time.Minute), handlers.GetSyncLog)
 		api.GET("/movies/slug/:slug", handlers.GetMovieBySlug)
+		api.POST("/login", handlers.Login)
 	}
 
 	port := os.Getenv("PORT")
