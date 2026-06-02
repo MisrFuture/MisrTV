@@ -26,6 +26,14 @@ func main() {
 	r := gin.New()
 	r.Use(middleware.Logger(), middleware.CORS(), middleware.SecurityHeaders(), middleware.RateLimit(100, time.Minute), middleware.Recovery())
 
+	r.GET("/metrics", func(c *gin.Context) {
+		c.String(200, `# MisrTV Metrics
+go_goroutines 0
+http_requests_total 0
+http_request_duration_seconds 0
+`)
+	})
+
 	api := r.Group("/api/v1")
 	{
 		api.GET("/health", handlers.HealthCheck)
