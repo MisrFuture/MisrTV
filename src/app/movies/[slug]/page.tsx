@@ -16,6 +16,7 @@ import { generateMovieInsight } from "@/lib/ai";
 import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds, addRecentMovie } from "@/lib/storage";
 import { useToast } from "@/context/toast-context";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function MovieDetailPage() {
   const params = useParams();
@@ -24,6 +25,7 @@ export default function MovieDetailPage() {
   const [liked, setLiked] = useState(false);
   const [watchlisted, setWatchlisted] = useState(false);
   const [trailerOpen, setTrailerOpen] = useState(false);
+  const [posterOpen, setPosterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -74,7 +76,10 @@ export default function MovieDetailPage() {
       </div>
 
       <div className="relative -mt-32 flex flex-col gap-8 md:flex-row">
-        <div className="relative mx-auto h-64 w-44 shrink-0 overflow-hidden rounded-2xl border-2 border-cinema-red/30 shadow-2xl shadow-cinema-red/10 animate-scale-in md:mx-0 md:h-80 md:w-56">
+        <div
+          className="relative mx-auto h-64 w-44 shrink-0 overflow-hidden rounded-2xl border-2 border-cinema-red/30 shadow-2xl shadow-cinema-red/10 animate-scale-in md:mx-0 md:h-80 md:w-56 cursor-pointer transition-transform hover:scale-[1.02]"
+          onClick={() => setPosterOpen(true)}
+        >
           <SafeImage src={movie.poster} alt={title} fill className="object-cover" />
         </div>
         <div className="flex-1 pt-4 md:pt-16 animate-slide-up">
@@ -200,6 +205,19 @@ export default function MovieDetailPage() {
             className="absolute inset-0 h-full w-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+          />
+        </div>
+      </Modal>
+
+      <Modal open={posterOpen} onClose={() => setPosterOpen(false)}>
+        <div className="flex items-center justify-center max-h-[85vh]">
+          <Image
+            src={movie.poster}
+            alt={title}
+            width={600}
+            height={900}
+            className="max-h-[85vh] w-auto rounded-2xl shadow-2xl"
+            priority
           />
         </div>
       </Modal>
