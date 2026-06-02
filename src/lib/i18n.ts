@@ -20,6 +20,7 @@ export const translations = {
       profile: "Profile",
       compare: "Compare",
       playlists: "Playlists",
+      settings: "Settings",
     },
     hero: {
       title: "Discover films that matter",
@@ -134,6 +135,7 @@ export const translations = {
       profile: "الملف الشخصي",
       compare: "مقارنة",
       playlists: "القوائم",
+      settings: "الإعدادات",
     },
     hero: {
       title: "اكتشف أفلاماً تستحق وقتك",

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Film, Sparkles, User, Calendar, Home, Languages, ArrowLeftRight, List } from "lucide-react";
+import { Film, Sparkles, User, Calendar, Home, Languages, ArrowLeftRight, List, Settings } from "lucide-react";
 import { useLocale } from "@/context/locale-context";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +18,7 @@ export function Header() {
     { href: "/profile", label: dict.nav.profile, icon: User },
     { href: "/compare", label: dict.nav.compare, icon: ArrowLeftRight },
     { href: "/playlists", label: dict.nav.playlists || "Playlists", icon: List },
+    { href: "/settings", label: dict.nav.settings || "Settings", icon: Settings },
   ];
 
   return (
