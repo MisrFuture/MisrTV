@@ -239,6 +239,20 @@ func GetVersion(c *gin.Context) {
 	})
 }
 
+func SearchSuggestions(c *gin.Context) {
+	q := c.Query("q")
+	if len(q) < 2 {
+		c.JSON(http.StatusOK, []string{})
+		return
+	}
+	var titles []string
+	database.DB.Model(&models.Movie{}).
+		Where("title ILIKE ? OR title_ar ILIKE ?", "%"+q+"%", "%"+q+"%").
+		Limit(8).
+		Pluck("title", &titles)
+	c.JSON(http.StatusOK, titles)
+}
+
 func GetSyncLog(c *gin.Context) {
 	var logs []models.SyncLog
 	database.DB.Order("created_at DESC").Limit(20).Find(&logs)
