@@ -45,6 +45,7 @@ export interface Movie {
   tags: string[];
   trailer?: string;
   gallery?: string[];
+  trivia?: string[];
 }
 
 export interface TVSeries {

@@ -32,7 +32,8 @@ function m(
   audience: number,
   tags: string[],
   trailer?: string,
-  gallery?: string[]
+  gallery?: string[],
+  trivia?: string[]
 ): Movie {
   return {
     id, slug, titleEn, titleAr, overviewEn, overviewAr,
@@ -43,7 +44,7 @@ function m(
     ageRating, contentRating, status, releaseDate,
     financials: { budget, boxOffice, marketing },
     ratings: { imdb, rottenTomatoes: rt, misrtv, audience }, tags,
-    trailer, gallery,
+    trailer, gallery, trivia,
   };
 }
 
@@ -328,7 +329,7 @@ export const movies: Movie[] = [
     2014,160,["Thriller","Drama","Horror"],["إثارة","دراما","رعب"],
     "Egypt","مصر","Marwan Hamed","مروان حامد",
     ["Karim Abdel Aziz","Nelly Karim","Sherif Mounir"],["كريم عبد العزيز","نيللي كريم","شريف منير"],
-    "PG-13","excellent","released","2014-06-15",5e6,22e6,2e6,8.1,85,8.6,82,["egypt","thriller","bestseller"],"jfKfPfyJRdk",["photo-1509281373149-e957c6296406","photo-1478720568477-152d9b164e63"]),
+    "PG-13","excellent","released","2014-06-15",5e6,22e6,2e6,8.1,85,8.6,82,["egypt","thriller","bestseller"],"jfKfPfyJRdk",["photo-1509281373149-e957c6296406","photo-1478720568477-152d9b164e63"],["Based on the novel by Ahmed Mourad","Filmed in Abbasiya Hospital","The highest-grossing Egyptian thriller of 2014"]),
  
   m("32","blue-elephant-2","The Blue Elephant 2","الفيل الأزرق 2",
     "Dr. Yehia returns to face new terrors inside the Abbasiya mental hospital.",

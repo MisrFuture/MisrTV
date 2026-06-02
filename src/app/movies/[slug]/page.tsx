@@ -270,6 +270,23 @@ export default function MovieDetailPage() {
         </p>
       </div>
 
+      {movie.trivia && movie.trivia.length > 0 && (
+        <div className="animate-slide-up">
+          <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
+            <Sparkles className="h-5 w-5 text-cinema-yellow" />
+            {locale === "ar" ? "معلومات" : "Trivia"}
+          </h2>
+          <ul className="space-y-2">
+            {movie.trivia.map((item, i) => (
+              <li key={i} className="flex items-start gap-3 rounded-xl border border-cinema-border/50 bg-cinema-card/50 p-3 text-sm text-cinema-muted">
+                <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cinema-yellow" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="animate-slide-up" style={{ animationDelay: "100ms" }}>
         <h2 className="mb-4 text-lg font-semibold">{dict.movie.analysis}</h2>
         <FinancialPanel movie={movie} />
