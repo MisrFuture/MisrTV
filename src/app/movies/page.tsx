@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, X, ChevronDown, ChevronUp, Calendar } from "lucide-react";
 import { MovieCard } from "@/components/movies/movie-card";
 import { MovieGridSkeleton } from "@/components/movies/movie-card-skeleton";
 import { movies } from "@/data/movies";
@@ -26,6 +26,8 @@ function MoviesContent() {
   const filter = params.get("filter");
   const quality = params.get("quality") as ContentRating | null;
   const selectedGenre = params.get("genre") || "";
+  const yearFrom = parseInt(params.get("yearFrom") || "", 10) || 0;
+  const yearTo = parseInt(params.get("yearTo") || "", 10) || 0;
 
   const [searchInput, setSearchInput] = useState(params.get("q") || "");
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -69,15 +71,21 @@ function MoviesContent() {
     if (selectedGenre) {
       list = list.filter((m) => m.genres.includes(selectedGenre));
     }
+    if (yearFrom) {
+      list = list.filter((m) => m.year >= yearFrom);
+    }
+    if (yearTo) {
+      list = list.filter((m) => m.year <= yearTo);
+    }
     return list.sort((a, b) => b.ratings.misrtv - a.ratings.misrtv);
-  }, [q, filter, quality, selectedGenre]);
+  }, [q, filter, quality, selectedGenre, yearFrom, yearTo]);
 
   const visibleMovies = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
 
   useEffect(() => {
     setVisibleCount(INITIAL_COUNT);
-  }, [q, filter, quality, selectedGenre]);
+  }, [q, filter, quality, selectedGenre, yearFrom, yearTo]);
 
   function loadMore() {
     setVisibleCount((prev) => Math.min(prev + LOAD_MORE_COUNT, filtered.length));
@@ -178,6 +186,43 @@ function MoviesContent() {
             {showAllGenres
               ? (locale === "ar" ? "أقل" : "Less")
               : (locale === "ar" ? `${genres.length - 8} أكثر` : `${genres.length - 8} more`)}
+          </button>
+        )}
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <Calendar className="h-4 w-4 text-cinema-muted" />
+        <input
+          type="number"
+          value={yearFrom || ""}
+          onChange={(e) => setParam("yearFrom", e.target.value)}
+          placeholder={locale === "ar" ? "من سنة" : "From year"}
+          className="w-24 rounded-lg border border-cinema-border/50 bg-cinema-card px-3 py-1.5 text-sm text-cinema-white placeholder:text-cinema-muted transition-all focus:border-cinema-red focus:outline-none"
+          min={2000}
+          max={2026}
+        />
+        <span className="text-cinema-muted">—</span>
+        <input
+          type="number"
+          value={yearTo || ""}
+          onChange={(e) => setParam("yearTo", e.target.value)}
+          placeholder={locale === "ar" ? "إلى سنة" : "To year"}
+          className="w-24 rounded-lg border border-cinema-border/50 bg-cinema-card px-3 py-1.5 text-sm text-cinema-white placeholder:text-cinema-muted transition-all focus:border-cinema-red focus:outline-none"
+          min={2000}
+          max={2026}
+        />
+        {(yearFrom > 0 || yearTo > 0) && (
+          <button
+            type="button"
+            onClick={() => {
+              const p = new URLSearchParams(params.toString());
+              p.delete("yearFrom");
+              p.delete("yearTo");
+              router.push(`${pathname}?${p.toString()}`);
+            }}
+            className="text-xs text-cinema-muted underline transition-colors hover:text-cinema-red"
+          >
+            {locale === "ar" ? "مسح" : "Clear"}
           </button>
         )}
       </div>
