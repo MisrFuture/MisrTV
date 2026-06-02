@@ -42,7 +42,7 @@ http_request_duration_seconds 0
 
 	api := r.Group("/api/v1")
 	{
-		api.GET("/health", handlers.HealthCheck)
+		api.GET("/health", handlers.DetailedHealth)
 
 		api.GET("/movies", handlers.GetMovies)
 		api.GET("/movies/trending", handlers.GetTrending)
