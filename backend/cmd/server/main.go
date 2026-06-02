@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/MisrFuture/MisrTV/backend/internal/auth"
 	"github.com/MisrFuture/MisrTV/backend/internal/database"
 	"github.com/MisrFuture/MisrTV/backend/internal/handlers"
 	"github.com/MisrFuture/MisrTV/backend/internal/middleware"
@@ -47,6 +48,14 @@ http_request_duration_seconds 0
 		api.GET("/sync/log", middleware.RateLimit(5, time.Minute), handlers.GetSyncLog)
 		api.GET("/movies/slug/:slug", handlers.GetMovieBySlug)
 		api.POST("/login", handlers.Login)
+	}
+
+	authorized := r.Group("/api/v1/admin")
+	authorized.Use(auth.AuthMiddleware())
+	{
+		authorized.POST("/movies", handlers.CreateMovie)
+		authorized.PUT("/movies/:id", handlers.UpdateMovie)
+		authorized.DELETE("/movies/:id", handlers.DeleteMovie)
 	}
 
 	port := os.Getenv("PORT")

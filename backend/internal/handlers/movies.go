@@ -13,6 +13,46 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func CreateMovie(c *gin.Context) {
+	var movie models.Movie
+	if err := c.ShouldBindJSON(&movie); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err := database.DB.Create(&movie).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create movie"})
+		return
+	}
+	c.JSON(http.StatusCreated, movie)
+}
+
+func UpdateMovie(c *gin.Context) {
+	id := c.Param("id")
+	var movie models.Movie
+	if err := database.DB.First(&movie, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "movie not found"})
+		return
+	}
+	if err := c.ShouldBindJSON(&movie); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err := database.DB.Save(&movie).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to update movie"})
+		return
+	}
+	c.JSON(http.StatusOK, movie)
+}
+
+func DeleteMovie(c *gin.Context) {
+	id := c.Param("id")
+	if err := database.DB.Delete(&models.Movie{}, id).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to delete movie"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "deleted"})
+}
+
 func GetMovies(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	perPage, _ := strconv.Atoi(c.DefaultQuery("per_page", "20"))
