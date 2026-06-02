@@ -529,6 +529,22 @@ export function getUpcomingMovies(): Movie[] {
   return movies.filter((m) => m.status === "upcoming");
 }
 
+export function getRecommendations(likeIds: string[], max = 6): Movie[] {
+  const liked = likeIds.map((id) => getMovieById(id)).filter(Boolean) as Movie[];
+  const likedTags = new Set(liked.flatMap((m) => m.tags));
+  const likedIds = new Set(likeIds);
+  return [...movies]
+    .filter((m) => !likedIds.has(m.id))
+    .map((m) => ({
+      movie: m,
+      score: m.tags.filter((t) => likedTags.has(t)).length,
+    }))
+    .filter((m) => m.score > 0)
+    .sort((a, b) => b.score - a.score || b.movie.ratings.misrtv - a.movie.ratings.misrtv)
+    .slice(0, max)
+    .map((m) => m.movie);
+}
+
 export function getArabCinemaMovies(): Movie[] {
   return movies.filter(
     (m) =>

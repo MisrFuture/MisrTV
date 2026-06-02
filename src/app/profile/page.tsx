@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { User, Heart, Bookmark, MapPin, Calendar } from "lucide-react";
-import { defaultUser, movies, getMovieById } from "@/data/movies";
+import { User, Heart, Bookmark, MapPin, Calendar, Sparkles } from "lucide-react";
+import { defaultUser, movies, getMovieById, getRecommendations } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { MovieCard } from "@/components/movies/movie-card";
 import { SafeImage } from "@/components/ui/safe-image";
@@ -18,6 +18,11 @@ export default function ProfilePage() {
     setLikedIds(getLikedIds());
     setWatchIds(getWatchlistIds());
   }, []);
+
+  const recommendations = useMemo(
+    () => getRecommendations(likedIds, 6),
+    [likedIds]
+  );
 
   const user = defaultUser;
   const name = locale === "ar" ? user.nameAr : user.name;
@@ -115,6 +120,22 @@ export default function ProfilePage() {
           </p>
         )}
       </section>
+
+      {recommendations.length > 0 && (
+        <section>
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold">
+            <Sparkles className="h-5 w-5 text-cinema-yellow" />
+            {locale === "ar" ? "اقتراحات لك" : "Recommended for you"}
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {recommendations.map((m, i) => (
+              <div key={m.id} className="opacity-0 animate-slide-up" style={{ animationDelay: `${i * 60}ms`, animationFillMode: "forwards" }}>
+                <MovieCard movie={m} showFinance />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
