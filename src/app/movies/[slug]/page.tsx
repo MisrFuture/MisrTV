@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { Heart, Bookmark, Sparkles, Play, Share2 } from "lucide-react";
+import { Heart, Bookmark, Sparkles, Play, Share2, Plus } from "lucide-react";
 import { getMovieBySlug } from "@/data/movies";
 import { useLocale } from "@/context/locale-context";
 import { movieTitle, movieOverview } from "@/lib/i18n";
@@ -15,6 +15,7 @@ import { MovieDetailSkeleton } from "@/components/movies/movie-detail-skeleton";
 import { generateMovieInsight } from "@/lib/ai";
 import { toggleLiked, isLiked, toggleWatchlist, getWatchlistIds, addRecentMovie } from "@/lib/storage";
 import { useToast } from "@/context/toast-context";
+import { getPlaylists, createPlaylist, addMovieToPlaylist, type Playlist } from "@/lib/playlists";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -26,6 +27,8 @@ export default function MovieDetailPage() {
   const [watchlisted, setWatchlisted] = useState(false);
   const [trailerOpen, setTrailerOpen] = useState(false);
   const [posterOpen, setPosterOpen] = useState(false);
+  const [showPlaylistPicker, setShowPlaylistPicker] = useState(false);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -38,6 +41,10 @@ export default function MovieDetailPage() {
     const m = getMovieBySlug(slug);
     if (m) addRecentMovie(m.id);
   }, [slug]);
+
+  useEffect(() => {
+    setPlaylists(getPlaylists());
+  }, []);
 
   if (loading || !slug) {
     return <MovieDetailSkeleton />;
@@ -121,6 +128,14 @@ export default function MovieDetailPage() {
                 <Share2 className="h-4 w-4" />
                 {locale === "ar" ? "مشاركة" : "Share"}
               </button>
+              <button
+                type="button"
+                onClick={() => setShowPlaylistPicker(!showPlaylistPicker)}
+                className="flex items-center gap-2 rounded-xl border border-cinema-border px-4 py-2 text-sm text-cinema-muted transition-all duration-200 hover:border-cinema-yellow hover:text-cinema-yellow active:scale-95"
+              >
+                <Plus className="h-4 w-4" />
+                {locale === "ar" ? "حفظ" : "Save"}
+              </button>
             <button
               type="button"
               onClick={() => {
@@ -166,6 +181,51 @@ export default function MovieDetailPage() {
               {dict.movie.addWatchlist}
             </button>
           </div>
+          {showPlaylistPicker && (
+            <div className="mt-2 w-64 rounded-xl border border-cinema-border bg-cinema-card p-3 shadow-xl animate-slide-up">
+              {playlists.length === 0 && (
+                <p className="mb-2 text-xs text-cinema-muted">
+                  {locale === "ar" ? "لا توجد قوائم" : "No playlists yet"}
+                </p>
+              )}
+              {playlists.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => {
+                    addMovieToPlaylist(p.id, movie.id);
+                    setShowPlaylistPicker(false);
+                    toast(
+                      locale === "ar" ? "تمت الإضافة إلى القائمة" : "Added to playlist",
+                      "success"
+                    );
+                  }}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm text-cinema-white transition-colors hover:bg-cinema-red/10"
+                >
+                  {p.name} ({p.movieIds.length})
+                </button>
+              ))}
+              <div className="mt-2 border-t border-cinema-border pt-2">
+                <input
+                  type="text"
+                  placeholder={locale === "ar" ? "قائمة جديدة..." : "New list name..."}
+                  className="w-full rounded-lg border border-cinema-border/50 bg-cinema-dark px-3 py-1.5 text-sm text-cinema-white placeholder:text-cinema-muted focus:border-cinema-red focus:outline-none"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && e.currentTarget.value.trim()) {
+                      const pl = createPlaylist(e.currentTarget.value.trim());
+                      setPlaylists(getPlaylists());
+                      addMovieToPlaylist(pl.id, movie.id);
+                      setShowPlaylistPicker(false);
+                      toast(
+                        locale === "ar" ? "تم إنشاء القائمة" : "Playlist created",
+                        "success"
+                      );
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
